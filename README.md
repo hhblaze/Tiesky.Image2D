@@ -39,6 +39,13 @@ Input overloads accept `byte[]`, `ReadOnlySpan<byte>`, and `Stream`. Results can
 The default input limit is 100 million decoded pixels and 512 MiB of encoded data. Metadata is
 stripped on output.
 
+The [examples](examples/README.md) cover every ownership model. The
+[LLM usage guide](_Docs/LLM/tiesky_image2D_skill.md) documents transformation parameters,
+resize semantics, ownership contracts, limits, and complete code examples for assistants working
+with this library. Implementation notes and extension invariants live in `_Docs/Implementation`
+and must be updated with architectural or algorithmic changes.
+
+
 Build and test from the solution root:
 
 ```powershell
@@ -50,8 +57,4 @@ dotnet run --project benchmarks\Tiesky.Image2D.Benchmarks -c Release -- --suite 
 
 The benchmark accepts `--suite jpeg,png,bmp,vp8l,vp8,encoders`, `--iterations`, `--warmups`, `--html`, and optional `--gate parity|png-parity|jpeg-parity|webp-parity|outperform` controls. JPEG, VP8L, and VP8 each contain 12 MP decode, predecoded rotation, predecoded resize, output-encode, and six thumbnail rows; PNG contains decode, rotation, encode, and six thumbnail rows. The codec parity gates require their component and transform rows to stay within 1.05x ImageSharp median latency and 1.10x peak private bytes while preserving captured quality and output size. The tracked, self-contained [benchmark report](_Docs/Implementation/BenchmarkResults.html) contains the complete 47-scenario matrix and embedded raw data. JPEG transform rows use their final Tiesky measurements as a 1.00x self-baseline; separate tables preserve real pre-optimization comparisons, while ImageSharp remains the primary opponent. WebP remains decode-only: its output-encode rows are explicitly VP8L→PNG level 6 and VP8→JPEG quality 85.
 
-The [examples](examples/README.md) cover every ownership model. The
-[LLM usage guide](_Docs/LLM/tiesky_image2D_skill.md) documents transformation parameters,
-resize semantics, ownership contracts, limits, and complete code examples for assistants working
-with this library. Implementation notes and extension invariants live in `_Docs/Implementation`
-and must be updated with architectural or algorithmic changes.
+
