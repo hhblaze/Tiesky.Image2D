@@ -11,5 +11,18 @@
     <NoWarn>$(NoWarn);CS1591</NoWarn>
     <AssemblyName>Tiesky.Image2D</AssemblyName>
     <RootNamespace>Tiesky.Image2D</RootNamespace>
+    <DefaultItemExcludes>$(DefaultItemExcludes);$(MSBuildProjectDirectory)/bin/**;$(MSBuildProjectDirectory)/obj/**</DefaultItemExcludes>
   </PropertyGroup>
+
+  <PropertyGroup Condition="'$(TieskySignedDeploymentBuild)' == 'true'">
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>$(TieskySigningKeyFile)</AssemblyOriginatorKeyFile>
+    <DefineConstants>$(DefineConstants);TIESKY_SIGNED_DEPLOYMENT</DefineConstants>
+  </PropertyGroup>
+
+  <Target Name="ValidateTieskySignedDeploymentBuild" BeforeTargets="CoreCompile" Condition="'$(TieskySignedDeploymentBuild)' == 'true'">
+    <Error Condition="'$(Configuration)' != 'Release'" Text="TieskySignedDeploymentBuild is supported only for Release builds." />
+    <Error Condition="'$(TieskySigningKeyFile)' == ''" Text="TieskySigningKeyFile must point to the strong-name key for a signed deployment build." />
+    <Error Condition="'$(TieskySigningKeyFile)' != '' and !Exists('$(TieskySigningKeyFile)')" Text="The strong-name key was not found at '$(TieskySigningKeyFile)'." />
+  </Target>
 </Project>

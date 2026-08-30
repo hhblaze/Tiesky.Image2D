@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
+  <metadata>
+    <id>Tiesky.Image2D</id>
+    <version>1.0.2026.830</version>
+    <title>Tiesky.Image2D</title>
+    <authors>tiesky.com</authors>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <license type="expression">BSD-2-Clause</license>
+    <icon>logo.png</icon>
+    <readme>README.md</readme>
+    <projectUrl>https://github.com/hhblaze/Tiesky.Image2D</projectUrl>
+    <repository type="git" url="https://github.com/hhblaze/Tiesky.Image2D.git" />
+    <description>A focused .NET 8 image transform library for server-side JPEG, PNG, BMP, and WebP decoding, EXIF orientation, quarter-turn rotation, resizing, and PNG/JPEG output.</description>
+    <copyright>Copyright (c) 2026, tiesky.com</copyright>
+    <tags>image image-processing jpeg png bmp webp exif rotation resize thumbnail net8</tags>
+    <dependencies>
+      <group targetFramework="net8.0" />
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="Deployment\work\bin\Release\net8.0\Tiesky.Image2D.dll" target="lib\net8.0" />
+    <file src="Deployment\work\bin\Release\net8.0\Tiesky.Image2D.xml" target="lib\net8.0" />
+    <file src="Deployment\logo.png" target="logo.png" />
+    <file src="README.md" target="README.md" />
+    <file src="LICENSE" target="LICENSE" />
+  </files>
+</package>

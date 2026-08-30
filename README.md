@@ -1,5 +1,7 @@
 # Tiesky.Image2D
 
+![Tiesky.Image2D project logo](https://raw.githubusercontent.com/hhblaze/Tiesky.Image2D/main/Deployment/logo.png)
+
 `Tiesky.Image2D` is a focused .NET 8 image transform library for server-side load, EXIF orientation, 90-degree rotation, resize, and PNG/JPEG output. 
 
 ```csharp
