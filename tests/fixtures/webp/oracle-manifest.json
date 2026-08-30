@@ -1,0 +1,389 @@
+[
+  {
+    "File": "alpha_filter_0_method_0.webp",
+    "Codec": "VP8",
+    "Width": 128,
+    "Height": 128,
+    "Opaque": false,
+    "ReferenceRgbaSha256": "62805c5a124f1c0af5640e002249096074b8f85773e67d35579fd4357900f517",
+    "DecoderRgbaSha256": "f8fac4ac7ffaaa0879657c86fa988269f42802ae51f770685b0a56bc9e3ef9ca"
+  },
+  {
+    "File": "alpha_filter_0_method_1.webp",
+    "Codec": "VP8",
+    "Width": 128,
+    "Height": 128,
+    "Opaque": false,
+    "ReferenceRgbaSha256": "62805c5a124f1c0af5640e002249096074b8f85773e67d35579fd4357900f517",
+    "DecoderRgbaSha256": "f8fac4ac7ffaaa0879657c86fa988269f42802ae51f770685b0a56bc9e3ef9ca"
+  },
+  {
+    "File": "alpha_filter_1_method_0.webp",
+    "Codec": "VP8",
+    "Width": 128,
+    "Height": 128,
+    "Opaque": false,
+    "ReferenceRgbaSha256": "62805c5a124f1c0af5640e002249096074b8f85773e67d35579fd4357900f517",
+    "DecoderRgbaSha256": "f8fac4ac7ffaaa0879657c86fa988269f42802ae51f770685b0a56bc9e3ef9ca"
+  },
+  {
+    "File": "alpha_filter_1_method_1.webp",
+    "Codec": "VP8",
+    "Width": 128,
+    "Height": 128,
+    "Opaque": false,
+    "ReferenceRgbaSha256": "62805c5a124f1c0af5640e002249096074b8f85773e67d35579fd4357900f517",
+    "DecoderRgbaSha256": "f8fac4ac7ffaaa0879657c86fa988269f42802ae51f770685b0a56bc9e3ef9ca"
+  },
+  {
+    "File": "alpha_filter_2_method_0.webp",
+    "Codec": "VP8",
+    "Width": 128,
+    "Height": 128,
+    "Opaque": false,
+    "ReferenceRgbaSha256": "62805c5a124f1c0af5640e002249096074b8f85773e67d35579fd4357900f517",
+    "DecoderRgbaSha256": "f8fac4ac7ffaaa0879657c86fa988269f42802ae51f770685b0a56bc9e3ef9ca"
+  },
+  {
+    "File": "alpha_filter_2_method_1.webp",
+    "Codec": "VP8",
+    "Width": 128,
+    "Height": 128,
+    "Opaque": false,
+    "ReferenceRgbaSha256": "62805c5a124f1c0af5640e002249096074b8f85773e67d35579fd4357900f517",
+    "DecoderRgbaSha256": "f8fac4ac7ffaaa0879657c86fa988269f42802ae51f770685b0a56bc9e3ef9ca"
+  },
+  {
+    "File": "alpha_filter_3_method_0.webp",
+    "Codec": "VP8",
+    "Width": 128,
+    "Height": 128,
+    "Opaque": false,
+    "ReferenceRgbaSha256": "62805c5a124f1c0af5640e002249096074b8f85773e67d35579fd4357900f517",
+    "DecoderRgbaSha256": "f8fac4ac7ffaaa0879657c86fa988269f42802ae51f770685b0a56bc9e3ef9ca"
+  },
+  {
+    "File": "alpha_filter_3_method_1.webp",
+    "Codec": "VP8",
+    "Width": 128,
+    "Height": 128,
+    "Opaque": false,
+    "ReferenceRgbaSha256": "62805c5a124f1c0af5640e002249096074b8f85773e67d35579fd4357900f517",
+    "DecoderRgbaSha256": "f8fac4ac7ffaaa0879657c86fa988269f42802ae51f770685b0a56bc9e3ef9ca"
+  },
+  {
+    "File": "alpha_no_compression.webp",
+    "Codec": "VP8",
+    "Width": 16,
+    "Height": 16,
+    "Opaque": false,
+    "ReferenceRgbaSha256": "d889344d3a6cc0b3212f3a6991f622ffb499a5e3f979bcb29b43dd37311d7f54",
+    "DecoderRgbaSha256": "939d0537e68b783b0b4bf8a7991301ddaf1dbacbd85373cb08ded6cbf6629831"
+  },
+  {
+    "File": "bike_lossy_complex_filter.webp",
+    "Codec": "VP8",
+    "Width": 250,
+    "Height": 195,
+    "Opaque": true,
+    "ReferenceRgbaSha256": "e74142b588be1abf10db02a82a19f7297fb0c7a6b4cd933906af0cf58f541e39",
+    "DecoderRgbaSha256": "4954519bd2c780a8f5151ad7cc0dcff06d8af7491ee96c0e74f90018d0038458"
+  },
+  {
+    "File": "bike_lossy_small.webp",
+    "Codec": "VP8",
+    "Width": 100,
+    "Height": 78,
+    "Opaque": true,
+    "ReferenceRgbaSha256": "91ebaed90bf8d03edebd43dc6c7c45014fe81cd5d44119efcde2566e52a9f2fb",
+    "DecoderRgbaSha256": "05a9c326cc436614e7a1306311d118e021780940c801a18bdf4e61106274e8d0"
+  },
+  {
+    "File": "lossless_alpha_small.webp",
+    "Codec": "VP8L",
+    "Width": 100,
+    "Height": 31,
+    "Opaque": false,
+    "ReferenceRgbaSha256": "1cfaf716e87c431c533011d3d026a1285909b2d01d45319eb69b99bb11e7b39a",
+    "DecoderRgbaSha256": "1cfaf716e87c431c533011d3d026a1285909b2d01d45319eb69b99bb11e7b39a"
+  },
+  {
+    "File": "lossless_vec_1_0.webp",
+    "Codec": "VP8L",
+    "Width": 16,
+    "Height": 16,
+    "Opaque": false,
+    "ReferenceRgbaSha256": "c6b88b3e6e3d60d8260a5f3d66d39b93fd650750ce8a1abe05130c09e5859b32",
+    "DecoderRgbaSha256": "c6b88b3e6e3d60d8260a5f3d66d39b93fd650750ce8a1abe05130c09e5859b32"
+  },
+  {
+    "File": "lossless_vec_1_1.webp",
+    "Codec": "VP8L",
+    "Width": 16,
+    "Height": 16,
+    "Opaque": false,
+    "ReferenceRgbaSha256": "c6b88b3e6e3d60d8260a5f3d66d39b93fd650750ce8a1abe05130c09e5859b32",
+    "DecoderRgbaSha256": "c6b88b3e6e3d60d8260a5f3d66d39b93fd650750ce8a1abe05130c09e5859b32"
+  },
+  {
+    "File": "lossless_vec_1_10.webp",
+    "Codec": "VP8L",
+    "Width": 16,
+    "Height": 16,
+    "Opaque": false,
+    "ReferenceRgbaSha256": "c6b88b3e6e3d60d8260a5f3d66d39b93fd650750ce8a1abe05130c09e5859b32",
+    "DecoderRgbaSha256": "c6b88b3e6e3d60d8260a5f3d66d39b93fd650750ce8a1abe05130c09e5859b32"
+  },
+  {
+    "File": "lossless_vec_1_11.webp",
+    "Codec": "VP8L",
+    "Width": 16,
+    "Height": 16,
+    "Opaque": false,
+    "ReferenceRgbaSha256": "c6b88b3e6e3d60d8260a5f3d66d39b93fd650750ce8a1abe05130c09e5859b32",
+    "DecoderRgbaSha256": "c6b88b3e6e3d60d8260a5f3d66d39b93fd650750ce8a1abe05130c09e5859b32"
+  },
+  {
+    "File": "lossless_vec_1_12.webp",
+    "Codec": "VP8L",
+    "Width": 16,
+    "Height": 16,
+    "Opaque": false,
+    "ReferenceRgbaSha256": "c6b88b3e6e3d60d8260a5f3d66d39b93fd650750ce8a1abe05130c09e5859b32",
+    "DecoderRgbaSha256": "c6b88b3e6e3d60d8260a5f3d66d39b93fd650750ce8a1abe05130c09e5859b32"
+  },
+  {
+    "File": "lossless_vec_1_13.webp",
+    "Codec": "VP8L",
+    "Width": 16,
+    "Height": 16,
+    "Opaque": false,
+    "ReferenceRgbaSha256": "c6b88b3e6e3d60d8260a5f3d66d39b93fd650750ce8a1abe05130c09e5859b32",
+    "DecoderRgbaSha256": "c6b88b3e6e3d60d8260a5f3d66d39b93fd650750ce8a1abe05130c09e5859b32"
+  },
+  {
+    "File": "lossless_vec_1_14.webp",
+    "Codec": "VP8L",
+    "Width": 16,
+    "Height": 16,
+    "Opaque": false,
+    "ReferenceRgbaSha256": "c6b88b3e6e3d60d8260a5f3d66d39b93fd650750ce8a1abe05130c09e5859b32",
+    "DecoderRgbaSha256": "c6b88b3e6e3d60d8260a5f3d66d39b93fd650750ce8a1abe05130c09e5859b32"
+  },
+  {
+    "File": "lossless_vec_1_15.webp",
+    "Codec": "VP8L",
+    "Width": 16,
+    "Height": 16,
+    "Opaque": false,
+    "ReferenceRgbaSha256": "c6b88b3e6e3d60d8260a5f3d66d39b93fd650750ce8a1abe05130c09e5859b32",
+    "DecoderRgbaSha256": "c6b88b3e6e3d60d8260a5f3d66d39b93fd650750ce8a1abe05130c09e5859b32"
+  },
+  {
+    "File": "lossless_vec_1_2.webp",
+    "Codec": "VP8L",
+    "Width": 16,
+    "Height": 16,
+    "Opaque": false,
+    "ReferenceRgbaSha256": "c6b88b3e6e3d60d8260a5f3d66d39b93fd650750ce8a1abe05130c09e5859b32",
+    "DecoderRgbaSha256": "c6b88b3e6e3d60d8260a5f3d66d39b93fd650750ce8a1abe05130c09e5859b32"
+  },
+  {
+    "File": "lossless_vec_1_3.webp",
+    "Codec": "VP8L",
+    "Width": 16,
+    "Height": 16,
+    "Opaque": false,
+    "ReferenceRgbaSha256": "c6b88b3e6e3d60d8260a5f3d66d39b93fd650750ce8a1abe05130c09e5859b32",
+    "DecoderRgbaSha256": "c6b88b3e6e3d60d8260a5f3d66d39b93fd650750ce8a1abe05130c09e5859b32"
+  },
+  {
+    "File": "lossless_vec_1_4.webp",
+    "Codec": "VP8L",
+    "Width": 16,
+    "Height": 16,
+    "Opaque": false,
+    "ReferenceRgbaSha256": "c6b88b3e6e3d60d8260a5f3d66d39b93fd650750ce8a1abe05130c09e5859b32",
+    "DecoderRgbaSha256": "c6b88b3e6e3d60d8260a5f3d66d39b93fd650750ce8a1abe05130c09e5859b32"
+  },
+  {
+    "File": "lossless_vec_1_5.webp",
+    "Codec": "VP8L",
+    "Width": 16,
+    "Height": 16,
+    "Opaque": false,
+    "ReferenceRgbaSha256": "c6b88b3e6e3d60d8260a5f3d66d39b93fd650750ce8a1abe05130c09e5859b32",
+    "DecoderRgbaSha256": "c6b88b3e6e3d60d8260a5f3d66d39b93fd650750ce8a1abe05130c09e5859b32"
+  },
+  {
+    "File": "lossless_vec_1_6.webp",
+    "Codec": "VP8L",
+    "Width": 16,
+    "Height": 16,
+    "Opaque": false,
+    "ReferenceRgbaSha256": "c6b88b3e6e3d60d8260a5f3d66d39b93fd650750ce8a1abe05130c09e5859b32",
+    "DecoderRgbaSha256": "c6b88b3e6e3d60d8260a5f3d66d39b93fd650750ce8a1abe05130c09e5859b32"
+  },
+  {
+    "File": "lossless_vec_1_7.webp",
+    "Codec": "VP8L",
+    "Width": 16,
+    "Height": 16,
+    "Opaque": false,
+    "ReferenceRgbaSha256": "c6b88b3e6e3d60d8260a5f3d66d39b93fd650750ce8a1abe05130c09e5859b32",
+    "DecoderRgbaSha256": "c6b88b3e6e3d60d8260a5f3d66d39b93fd650750ce8a1abe05130c09e5859b32"
+  },
+  {
+    "File": "lossless_vec_1_8.webp",
+    "Codec": "VP8L",
+    "Width": 16,
+    "Height": 16,
+    "Opaque": false,
+    "ReferenceRgbaSha256": "c6b88b3e6e3d60d8260a5f3d66d39b93fd650750ce8a1abe05130c09e5859b32",
+    "DecoderRgbaSha256": "c6b88b3e6e3d60d8260a5f3d66d39b93fd650750ce8a1abe05130c09e5859b32"
+  },
+  {
+    "File": "lossless_vec_1_9.webp",
+    "Codec": "VP8L",
+    "Width": 16,
+    "Height": 16,
+    "Opaque": false,
+    "ReferenceRgbaSha256": "c6b88b3e6e3d60d8260a5f3d66d39b93fd650750ce8a1abe05130c09e5859b32",
+    "DecoderRgbaSha256": "c6b88b3e6e3d60d8260a5f3d66d39b93fd650750ce8a1abe05130c09e5859b32"
+  },
+  {
+    "File": "lossless_vec_2_0.webp",
+    "Codec": "VP8L",
+    "Width": 128,
+    "Height": 128,
+    "Opaque": true,
+    "ReferenceRgbaSha256": "def70892d49a5a536469ba5d70b333e326842124b601350a79b0f35c6883ff63",
+    "DecoderRgbaSha256": "def70892d49a5a536469ba5d70b333e326842124b601350a79b0f35c6883ff63"
+  },
+  {
+    "File": "lossless_vec_2_1.webp",
+    "Codec": "VP8L",
+    "Width": 128,
+    "Height": 128,
+    "Opaque": true,
+    "ReferenceRgbaSha256": "def70892d49a5a536469ba5d70b333e326842124b601350a79b0f35c6883ff63",
+    "DecoderRgbaSha256": "def70892d49a5a536469ba5d70b333e326842124b601350a79b0f35c6883ff63"
+  },
+  {
+    "File": "lossless_vec_2_10.webp",
+    "Codec": "VP8L",
+    "Width": 128,
+    "Height": 128,
+    "Opaque": true,
+    "ReferenceRgbaSha256": "def70892d49a5a536469ba5d70b333e326842124b601350a79b0f35c6883ff63",
+    "DecoderRgbaSha256": "def70892d49a5a536469ba5d70b333e326842124b601350a79b0f35c6883ff63"
+  },
+  {
+    "File": "lossless_vec_2_11.webp",
+    "Codec": "VP8L",
+    "Width": 128,
+    "Height": 128,
+    "Opaque": true,
+    "ReferenceRgbaSha256": "def70892d49a5a536469ba5d70b333e326842124b601350a79b0f35c6883ff63",
+    "DecoderRgbaSha256": "def70892d49a5a536469ba5d70b333e326842124b601350a79b0f35c6883ff63"
+  },
+  {
+    "File": "lossless_vec_2_12.webp",
+    "Codec": "VP8L",
+    "Width": 128,
+    "Height": 128,
+    "Opaque": true,
+    "ReferenceRgbaSha256": "def70892d49a5a536469ba5d70b333e326842124b601350a79b0f35c6883ff63",
+    "DecoderRgbaSha256": "def70892d49a5a536469ba5d70b333e326842124b601350a79b0f35c6883ff63"
+  },
+  {
+    "File": "lossless_vec_2_13.webp",
+    "Codec": "VP8L",
+    "Width": 128,
+    "Height": 128,
+    "Opaque": true,
+    "ReferenceRgbaSha256": "def70892d49a5a536469ba5d70b333e326842124b601350a79b0f35c6883ff63",
+    "DecoderRgbaSha256": "def70892d49a5a536469ba5d70b333e326842124b601350a79b0f35c6883ff63"
+  },
+  {
+    "File": "lossless_vec_2_14.webp",
+    "Codec": "VP8L",
+    "Width": 128,
+    "Height": 128,
+    "Opaque": true,
+    "ReferenceRgbaSha256": "def70892d49a5a536469ba5d70b333e326842124b601350a79b0f35c6883ff63",
+    "DecoderRgbaSha256": "def70892d49a5a536469ba5d70b333e326842124b601350a79b0f35c6883ff63"
+  },
+  {
+    "File": "lossless_vec_2_15.webp",
+    "Codec": "VP8L",
+    "Width": 128,
+    "Height": 128,
+    "Opaque": true,
+    "ReferenceRgbaSha256": "def70892d49a5a536469ba5d70b333e326842124b601350a79b0f35c6883ff63",
+    "DecoderRgbaSha256": "def70892d49a5a536469ba5d70b333e326842124b601350a79b0f35c6883ff63"
+  },
+  {
+    "File": "lossless_vec_2_2.webp",
+    "Codec": "VP8L",
+    "Width": 128,
+    "Height": 128,
+    "Opaque": true,
+    "ReferenceRgbaSha256": "def70892d49a5a536469ba5d70b333e326842124b601350a79b0f35c6883ff63",
+    "DecoderRgbaSha256": "def70892d49a5a536469ba5d70b333e326842124b601350a79b0f35c6883ff63"
+  },
+  {
+    "File": "lossless_vec_2_3.webp",
+    "Codec": "VP8L",
+    "Width": 128,
+    "Height": 128,
+    "Opaque": true,
+    "ReferenceRgbaSha256": "def70892d49a5a536469ba5d70b333e326842124b601350a79b0f35c6883ff63",
+    "DecoderRgbaSha256": "def70892d49a5a536469ba5d70b333e326842124b601350a79b0f35c6883ff63"
+  },
+  {
+    "File": "lossless_vec_2_5.webp",
+    "Codec": "VP8L",
+    "Width": 128,
+    "Height": 128,
+    "Opaque": true,
+    "ReferenceRgbaSha256": "def70892d49a5a536469ba5d70b333e326842124b601350a79b0f35c6883ff63",
+    "DecoderRgbaSha256": "def70892d49a5a536469ba5d70b333e326842124b601350a79b0f35c6883ff63"
+  },
+  {
+    "File": "lossless_vec_2_6.webp",
+    "Codec": "VP8L",
+    "Width": 128,
+    "Height": 128,
+    "Opaque": true,
+    "ReferenceRgbaSha256": "def70892d49a5a536469ba5d70b333e326842124b601350a79b0f35c6883ff63",
+    "DecoderRgbaSha256": "def70892d49a5a536469ba5d70b333e326842124b601350a79b0f35c6883ff63"
+  },
+  {
+    "File": "lossless_vec_2_8.webp",
+    "Codec": "VP8L",
+    "Width": 128,
+    "Height": 128,
+    "Opaque": true,
+    "ReferenceRgbaSha256": "def70892d49a5a536469ba5d70b333e326842124b601350a79b0f35c6883ff63",
+    "DecoderRgbaSha256": "def70892d49a5a536469ba5d70b333e326842124b601350a79b0f35c6883ff63"
+  },
+  {
+    "File": "lossless_vec_2_9.webp",
+    "Codec": "VP8L",
+    "Width": 128,
+    "Height": 128,
+    "Opaque": true,
+    "ReferenceRgbaSha256": "def70892d49a5a536469ba5d70b333e326842124b601350a79b0f35c6883ff63",
+    "DecoderRgbaSha256": "def70892d49a5a536469ba5d70b333e326842124b601350a79b0f35c6883ff63"
+  },
+  {
+    "File": "small_1x1.webp",
+    "Codec": "VP8",
+    "Width": 1,
+    "Height": 1,
+    "Opaque": true,
+    "ReferenceRgbaSha256": "ca1155b87c3731da1db2e80cc2c9c60f4b8c83343af339690dfda17e14147a13",
+    "DecoderRgbaSha256": "5db6c46dd876956aba6a90396112c45b2acf7bd88d500a22715b7bb28c33e0fa"
+  }
+]

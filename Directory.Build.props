@@ -1,0 +1,6 @@
+<Project>
+  <PropertyGroup>
+    <!-- Production has no packages; repository tools use direct local references. Keep offline builds warning-free. -->
+    <NuGetAudit>false</NuGetAudit>
+  </PropertyGroup>
+</Project>

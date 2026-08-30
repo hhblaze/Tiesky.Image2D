@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <Optimize>true</Optimize>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Tiesky.Image2D\Tiesky.Image2D.csproj" />
+    <None Include="..\fixtures\webp\*.webp" Link="fixtures\webp\%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="..\fixtures\webp\*.rgba" Link="fixtures\webp\%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="..\fixtures\webp\oracle-manifest.json" Link="fixtures\webp\oracle-manifest.json" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="..\..\benchmarks\fixtures\benchmark-12mp-lossless.webp" Link="fixtures\webp\benchmark-12mp-lossless.webp" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="..\..\benchmarks\fixtures\benchmark-12mp-lossy.webp" Link="fixtures\webp\benchmark-12mp-lossy.webp" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="..\fixtures\jpeg\*.jpg" Link="fixtures\jpeg\%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="..\fixtures\jpeg\*.rgba" Link="fixtures\jpeg\%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="..\fixtures\png\*.*" Link="fixtures\png\%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="..\fixtures\bmp\*.*" Link="fixtures\bmp\%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+</Project>

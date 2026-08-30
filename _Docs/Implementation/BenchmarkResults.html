@@ -1,0 +1,3639 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Tiesky.Image2D benchmark results</title><style>body{font:14px/1.45 system-ui,-apple-system,Segoe UI,sans-serif;margin:0;background:#f4f6f8;color:#17212b}main{max-width:1500px;margin:auto;padding:32px}h1{margin:0 0 8px}h2{margin-top:32px}.meta,.note{background:white;border:1px solid #d9e0e7;border-radius:8px;padding:16px}.meta{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:8px 20px}table{width:100%;border-collapse:collapse;background:white;font-variant-numeric:tabular-nums}th,td{border:1px solid #d9e0e7;padding:7px 8px;text-align:right;white-space:nowrap}th{background:#eaf0f5;position:sticky;top:0}th:first-child,td:first-child{text-align:left}.good{color:#087b35;font-weight:650}.bad{color:#b3261e;font-weight:650}.muted{color:#607080}.scroll{overflow:auto;border-radius:8px;box-shadow:0 1px 3px #0001}code{font-size:12px}</style></head><body><main><h1>Tiesky.Image2D codec performance</h1><p class="muted">Self-contained benchmark report. Lower latency and memory ratios are better.</p><section class="meta"><div><strong>Generated (UTC):</strong> 2026-08-30 14:34:59Z</div><div><strong>Runtime:</strong> .NET 8.0.30</div><div><strong>Operating system:</strong> Microsoft Windows 10.0.26200</div><div><strong>Architecture:</strong> X64</div><div><strong>Processor:</strong> Intel64 Family 6 Model 158 Stepping 10, GenuineIntel</div><div><strong>Logical processors:</strong> 12</div><div><strong>Server GC:</strong> False</div><div><strong>Iterations:</strong> 5 warmups / 15 measured</div><div><strong>Scenarios:</strong> 47</div><div><strong>Tiesky:</strong> Tiesky.Image2D 1.0.0.0</div><div><strong>Reference:</strong> SixLabors.ImageSharp 3.1.12 (assembly 3.0.0.0)</div><div><strong>Adaptive parallelism:</strong> rotation ≥1 MP; resize ≥4M taps; JPEG IDCT pipeline ≥2M work; JPEG encode ≥1 MP; PNG filtering ≥4 MiB; VP8 token/reconstruction pipeline ≥1 MP; WebP output conversion capped at 4 workers</div><div><strong>Baseline sample:</strong> 5 warmups / 15 measured</div></section><p class="note">PNG rows, the JPEG component/1600 px gate rows, and every VP8L/VP8 component and transform row target final/ImageSharp median latency ≤1.05x and peak private bytes ≤1.10x; dimensions and quality must also pass. WebP remains decode-only: its encode components measure the existing VP8L→PNG level 6 and VP8→JPEG quality 85 output stages. Total time includes output materialization, while decode/rotation/resize/encode component medians are measured inside each implementation. Peak private bytes are sampled in isolated worker processes. JPEG rows retain the requested final self-baseline (1.00x); their primary performance comparison is against ImageSharp.</p><h2>JPEG pre-optimization to final</h2><div class="scroll"><table><thead><tr><th>Scenario</th><th>Before ms</th><th>Final ms</th><th>Before / final</th><th>Before MiB</th><th>Final MiB</th><th>Final / before memory</th></tr></thead><tbody><tr class="improvement"><td>JPEG to JPEG 200px R0</td><td>118.54</td><td>114.63</td><td class="good">1.03x</td><td>40.5</td><td>42.8</td><td class="bad">1.06x</td></tr><tr class="improvement"><td>JPEG to JPEG 200px R90</td><td>121.18</td><td>115.37</td><td class="good">1.05x</td><td>40.4</td><td>42.8</td><td class="bad">1.06x</td></tr><tr class="improvement"><td>JPEG to JPEG 800px R0</td><td>154.20</td><td>124.20</td><td class="good">1.24x</td><td>48.2</td><td>59.3</td><td class="bad">1.23x</td></tr><tr class="improvement"><td>JPEG to JPEG 800px R90</td><td>153.40</td><td>129.06</td><td class="good">1.19x</td><td>48.6</td><td>59.4</td><td class="bad">1.22x</td></tr><tr class="improvement"><td>JPEG to JPEG 1600px R0</td><td>301.90</td><td>155.94</td><td class="good">1.94x</td><td>74.6</td><td>80.1</td><td class="bad">1.07x</td></tr><tr class="improvement"><td>JPEG to JPEG 1600px R90</td><td>308.34</td><td>167.16</td><td class="good">1.84x</td><td>75.3</td><td>80.1</td><td class="bad">1.06x</td></tr></tbody></table></div><h2>WebP pre-optimization to final</h2><div class="scroll"><table><thead><tr><th>Scenario</th><th>Before ms</th><th>Final ms</th><th>Before / final</th><th>Before MiB</th><th>Final MiB</th><th>Final / before memory</th></tr></thead><tbody><tr class="improvement"><td>VP8L decode 4000x3000</td><td>250.87</td><td>109.47</td><td class="good">2.29x</td><td>110.6</td><td>106.9</td><td class="good">0.97x</td></tr><tr class="improvement"><td>VP8L rotate 4000x3000 R90</td><td>14.80</td><td>14.55</td><td class="good">1.02x</td><td>116.8</td><td>98.8</td><td class="good">0.85x</td></tr><tr class="improvement"><td>VP8L resize 4000x3000 to 1600px</td><td>61.80</td><td>53.90</td><td class="good">1.15x</td><td>90.9</td><td>82.7</td><td class="good">0.91x</td></tr><tr class="improvement"><td>VP8L decoded output to PNG 4000x3000 L6</td><td>231.57</td><td>127.77</td><td class="good">1.81x</td><td>64.3</td><td>59.1</td><td class="good">0.92x</td></tr><tr class="improvement"><td>VP8L to PNG 200px R0</td><td>301.01</td><td>161.27</td><td class="good">1.87x</td><td>105.8</td><td>96.1</td><td class="good">0.91x</td></tr><tr class="improvement"><td>VP8L to PNG 200px R90</td><td>315.25</td><td>175.77</td><td class="good">1.79x</td><td>105.8</td><td>96.3</td><td class="good">0.91x</td></tr><tr class="improvement"><td>VP8L to PNG 800px R0</td><td>318.50</td><td>181.94</td><td class="good">1.75x</td><td>106.5</td><td>96.7</td><td class="good">0.91x</td></tr><tr class="improvement"><td>VP8L to PNG 800px R90</td><td>345.85</td><td>205.82</td><td class="good">1.68x</td><td>109.4</td><td>98.8</td><td class="good">0.90x</td></tr><tr class="improvement"><td>VP8L to PNG 1600px R0</td><td>408.73</td><td>232.59</td><td class="good">1.76x</td><td>112.3</td><td>106.8</td><td class="good">0.95x</td></tr><tr class="improvement"><td>VP8L to PNG 1600px R90</td><td>496.72</td><td>283.91</td><td class="good">1.75x</td><td>119.0</td><td>111.8</td><td class="good">0.94x</td></tr><tr class="improvement"><td>VP8 decode 4000x3000</td><td>697.85</td><td>384.49</td><td class="good">1.81x</td><td>112.7</td><td>121.4</td><td class="bad">1.08x</td></tr><tr class="improvement"><td>VP8 rotate 4000x3000 R90</td><td>14.48</td><td>13.75</td><td class="good">1.05x</td><td>199.2</td><td>171.6</td><td class="good">0.86x</td></tr><tr class="improvement"><td>VP8 resize 4000x3000 to 1600px</td><td>58.28</td><td>54.43</td><td class="good">1.07x</td><td>151.4</td><td>93.4</td><td class="good">0.62x</td></tr><tr class="improvement"><td>VP8 decoded output to JPEG 4000x3000 Q85</td><td>121.37</td><td>117.25</td><td class="good">1.04x</td><td>167.0</td><td>109.2</td><td class="good">0.65x</td></tr><tr class="improvement"><td>VP8 to JPEG 200px R0</td><td>738.65</td><td>421.77</td><td class="good">1.75x</td><td>108.4</td><td>84.6</td><td class="good">0.78x</td></tr><tr class="improvement"><td>VP8 to JPEG 200px R90</td><td>761.98</td><td>447.59</td><td class="good">1.70x</td><td>109.0</td><td>85.0</td><td class="good">0.78x</td></tr><tr class="improvement"><td>VP8 to JPEG 800px R0</td><td>767.92</td><td>441.32</td><td class="good">1.74x</td><td>153.3</td><td>89.8</td><td class="good">0.59x</td></tr><tr class="improvement"><td>VP8 to JPEG 800px R90</td><td>777.98</td><td>459.10</td><td class="good">1.69x</td><td>127.3</td><td>90.0</td><td class="good">0.71x</td></tr><tr class="improvement"><td>VP8 to JPEG 1600px R0</td><td>773.95</td><td>463.95</td><td class="good">1.67x</td><td>142.5</td><td>100.8</td><td class="good">0.71x</td></tr><tr class="improvement"><td>VP8 to JPEG 1600px R90</td><td>781.63</td><td>480.73</td><td class="good">1.63x</td><td>142.6</td><td>100.1</td><td class="good">0.70x</td></tr></tbody></table></div><h2>JPEG</h2><div class="scroll"><table><thead><tr><th>Scenario</th><th>Final total ms</th><th>Baseline total ms</th><th>Baseline / final</th><th>ImageSharp ms</th><th>Final / IS</th><th>Final decode</th><th>Final resize</th><th>Final encode</th><th>Baseline decode</th><th>Baseline resize</th><th>Baseline encode</th><th>Final MiB</th><th>Baseline MiB</th><th>Final / baseline memory</th><th>IS MiB</th><th>Final / IS memory</th><th>Output bytes</th><th>Dimensions</th><th>PSNR dB</th><th>Exact hash</th></tr></thead><tbody><tr><td>JPEG decode 4000x3000</td><td>119.73</td><td>119.73</td><td class="good">1.00x</td><td>120.13</td><td class="good">1.00x</td><td>119.73</td><td>0.00</td><td>0.00</td><td>119.73</td><td>0.00</td><td>0.00</td><td>97.8</td><td>97.8</td><td class="good">1.00x</td><td>143.2</td><td class="good">0.68x</td><td>2,051,584</td><td class="good">4000x3000</td><td>25.51</td><td class="muted">no</td></tr><tr><td>JPEG rotate 4000x3000 R90</td><td>13.17</td><td>13.17</td><td class="good">1.00x</td><td>32.18</td><td class="good">0.41x</td><td>0.00</td><td>13.17</td><td>0.00</td><td>0.00</td><td>13.17</td><td>0.00</td><td>118.0</td><td>118.0</td><td class="good">1.00x</td><td>198.1</td><td class="good">0.60x</td><td>2,779,544</td><td class="good">3000x4000</td><td>25.51</td><td class="muted">no</td></tr><tr><td>JPEG resize 4000x3000 to 1600px</td><td>56.67</td><td>56.67</td><td class="good">1.00x</td><td>59.52</td><td class="good">0.95x</td><td>0.00</td><td>56.67</td><td>0.00</td><td>0.00</td><td>56.67</td><td>0.00</td><td>102.9</td><td>102.9</td><td class="good">1.00x</td><td>99.9</td><td class="bad">1.03x</td><td>1,538,940</td><td class="good">1600x1200</td><td>36.11</td><td class="muted">no</td></tr><tr><td>JPEG encoder 4000x3000 Q85</td><td>113.19</td><td>113.19</td><td class="good">1.00x</td><td>140.89</td><td class="good">0.80x</td><td>0.00</td><td>0.00</td><td>112.02</td><td>0.00</td><td>0.00</td><td>112.02</td><td>99.6</td><td>99.6</td><td class="good">1.00x</td><td>155.6</td><td class="good">0.64x</td><td>5,992,879</td><td class="good">4000x3000</td><td>22.18</td><td class="muted">no</td></tr><tr><td>JPEG to JPEG 200px R0</td><td>114.63</td><td>114.63</td><td class="good">1.00x</td><td>147.89</td><td class="good">0.78x</td><td>109.13</td><td>4.42</td><td>0.62</td><td>109.13</td><td>4.42</td><td>0.62</td><td>42.8</td><td>42.8</td><td class="good">1.00x</td><td>58.0</td><td class="good">0.74x</td><td>2,985</td><td class="good">200x150</td><td>38.33</td><td class="muted">no</td></tr><tr><td>JPEG to JPEG 200px R90</td><td>115.37</td><td>115.37</td><td class="good">1.00x</td><td>178.21</td><td class="good">0.65x</td><td>109.52</td><td>4.77</td><td>0.65</td><td>109.52</td><td>4.77</td><td>0.65</td><td>42.8</td><td>42.8</td><td class="good">1.00x</td><td>96.1</td><td class="good">0.45x</td><td>4,081</td><td class="good">150x200</td><td>39.59</td><td class="muted">no</td></tr><tr><td>JPEG to JPEG 800px R0</td><td>124.20</td><td>124.20</td><td class="good">1.00x</td><td>169.28</td><td class="good">0.73x</td><td>102.66</td><td>6.05</td><td>14.69</td><td>102.66</td><td>6.05</td><td>14.69</td><td>59.3</td><td>59.3</td><td class="good">1.00x</td><td>64.7</td><td class="good">0.92x</td><td>267,028</td><td class="good">800x600</td><td>20.70</td><td class="muted">no</td></tr><tr><td>JPEG to JPEG 800px R90</td><td>129.06</td><td>129.06</td><td class="good">1.00x</td><td>203.61</td><td class="good">0.63x</td><td>106.22</td><td>7.35</td><td>14.80</td><td>106.22</td><td>7.35</td><td>14.80</td><td>59.4</td><td>59.4</td><td class="good">1.00x</td><td>98.3</td><td class="good">0.60x</td><td>266,685</td><td class="good">600x800</td><td>20.88</td><td class="muted">no</td></tr><tr><td>JPEG to JPEG 1600px R0</td><td>155.94</td><td>155.94</td><td class="good">1.00x</td><td>211.60</td><td class="good">0.74x</td><td>110.50</td><td>23.64</td><td>19.30</td><td>110.50</td><td>23.64</td><td>19.30</td><td>80.1</td><td>80.1</td><td class="good">1.00x</td><td>77.3</td><td class="bad">1.04x</td><td>1,133,758</td><td class="good">1600x1200</td><td>23.38</td><td class="muted">no</td></tr><tr><td>JPEG to JPEG 1600px R90</td><td>167.16</td><td>167.16</td><td class="good">1.00x</td><td>249.47</td><td class="good">0.67x</td><td>115.78</td><td>28.16</td><td>20.71</td><td>115.78</td><td>28.16</td><td>20.71</td><td>80.1</td><td>80.1</td><td class="good">1.00x</td><td>107.6</td><td class="good">0.74x</td><td>1,137,440</td><td class="good">1200x1600</td><td>23.40</td><td class="muted">no</td></tr></tbody></table></div><h2>PNG</h2><div class="scroll"><table><thead><tr><th>Scenario</th><th>Final total ms</th><th>Baseline total ms</th><th>Baseline / final</th><th>ImageSharp ms</th><th>Final / IS</th><th>Final decode</th><th>Final resize</th><th>Final encode</th><th>Baseline decode</th><th>Baseline resize</th><th>Baseline encode</th><th>Final MiB</th><th>Baseline MiB</th><th>Final / baseline memory</th><th>IS MiB</th><th>Final / IS memory</th><th>Output bytes</th><th>Dimensions</th><th>PSNR dB</th><th>Exact hash</th></tr></thead><tbody><tr><td>PNG decode 4000x3000</td><td>86.29</td><td>85.12</td><td class="bad">0.99x</td><td>123.80</td><td class="good">0.70x</td><td>86.29</td><td>0.00</td><td>0.00</td><td>85.12</td><td>0.00</td><td>0.00</td><td>58.1</td><td>58.6</td><td class="good">0.99x</td><td>76.8</td><td class="good">0.76x</td><td>1,985,083</td><td class="good">4000x3000</td><td>999.00</td><td class="good">yes</td></tr><tr><td>PNG rotate 4000x3000 R90</td><td>14.23</td><td>13.27</td><td class="bad">0.93x</td><td>30.24</td><td class="good">0.47x</td><td>0.00</td><td>14.23</td><td>0.00</td><td>0.00</td><td>13.27</td><td>0.00</td><td>101.9</td><td>102.2</td><td class="good">1.00x</td><td>135.9</td><td class="good">0.75x</td><td>2,673,514</td><td class="good">3000x4000</td><td>999.00</td><td class="good">yes</td></tr><tr><td>PNG encoder 4000x3000 L6</td><td>129.74</td><td>125.84</td><td class="bad">0.97x</td><td>333.01</td><td class="good">0.39x</td><td>0.00</td><td>0.00</td><td>129.42</td><td>0.00</td><td>0.00</td><td>125.60</td><td>58.5</td><td>58.4</td><td class="bad">1.00x</td><td>75.7</td><td class="good">0.77x</td><td>1,985,083</td><td class="good">4000x3000</td><td>999.00</td><td class="good">yes</td></tr><tr><td>PNG to PNG 200px R0</td><td>128.80</td><td>124.74</td><td class="bad">0.97x</td><td>147.56</td><td class="good">0.87x</td><td>87.78</td><td>38.27</td><td>0.79</td><td>85.18</td><td>36.87</td><td>0.85</td><td>52.3</td><td>51.8</td><td class="bad">1.01x</td><td>52.3</td><td class="good">1.00x</td><td>4,880</td><td class="good">200x150</td><td>52.53</td><td class="muted">no</td></tr><tr><td>PNG to PNG 200px R90</td><td>135.39</td><td>139.63</td><td class="good">1.03x</td><td>178.47</td><td class="good">0.76x</td><td>87.19</td><td>45.59</td><td>0.85</td><td>85.17</td><td>51.56</td><td>0.88</td><td>52.7</td><td>52.5</td><td class="bad">1.00x</td><td>89.4</td><td class="good">0.59x</td><td>3,701</td><td class="good">150x200</td><td>52.53</td><td class="muted">no</td></tr><tr><td>PNG to PNG 800px R0</td><td>155.71</td><td>149.17</td><td class="bad">0.96x</td><td>184.51</td><td class="good">0.84x</td><td>87.80</td><td>43.55</td><td>22.17</td><td>85.17</td><td>40.47</td><td>21.63</td><td>60.8</td><td>61.3</td><td class="good">0.99x</td><td>59.9</td><td class="bad">1.01x</td><td>414,520</td><td class="good">800x600</td><td>56.45</td><td class="muted">no</td></tr><tr><td>PNG to PNG 800px R90</td><td>178.51</td><td>177.29</td><td class="bad">0.99x</td><td>232.19</td><td class="good">0.77x</td><td>85.27</td><td>60.04</td><td>29.95</td><td>85.22</td><td>60.00</td><td>30.16</td><td>62.0</td><td>62.2</td><td class="good">1.00x</td><td>95.9</td><td class="good">0.65x</td><td>566,342</td><td class="good">600x800</td><td>56.45</td><td class="muted">no</td></tr><tr><td>PNG to PNG 1600px R0</td><td>210.12</td><td>239.35</td><td class="good">1.14x</td><td>289.46</td><td class="good">0.73x</td><td>85.61</td><td>57.54</td><td>63.49</td><td>85.18</td><td>60.62</td><td>90.46</td><td>80.0</td><td>79.2</td><td class="bad">1.01x</td><td>73.9</td><td class="bad">1.08x</td><td>1,529,962</td><td class="good">1600x1200</td><td>55.08</td><td class="muted">no</td></tr><tr><td>PNG to PNG 1600px R90</td><td>254.71</td><td>288.94</td><td class="good">1.13x</td><td>337.24</td><td class="good">0.76x</td><td>87.60</td><td>76.15</td><td>87.33</td><td>86.06</td><td>74.01</td><td>126.79</td><td>86.5</td><td>83.2</td><td class="bad">1.04x</td><td>150.6</td><td class="good">0.57x</td><td>2,161,309</td><td class="good">1200x1600</td><td>55.08</td><td class="muted">no</td></tr></tbody></table></div><h2>BMP</h2><div class="scroll"><table><thead><tr><th>Scenario</th><th>Final total ms</th><th>Baseline total ms</th><th>Baseline / final</th><th>ImageSharp ms</th><th>Final / IS</th><th>Final decode</th><th>Final resize</th><th>Final encode</th><th>Baseline decode</th><th>Baseline resize</th><th>Baseline encode</th><th>Final MiB</th><th>Baseline MiB</th><th>Final / baseline memory</th><th>IS MiB</th><th>Final / IS memory</th><th>Output bytes</th><th>Dimensions</th><th>PSNR dB</th><th>Exact hash</th></tr></thead><tbody><tr><td>BMP to PNG 200px R0</td><td>52.86</td><td>50.09</td><td class="bad">0.95x</td><td>39.70</td><td class="bad">1.33x</td><td>12.94</td><td>36.27</td><td>0.78</td><td>12.14</td><td>34.39</td><td>1.06</td><td>160.2</td><td>160.1</td><td class="bad">1.00x</td><td>95.0</td><td class="bad">1.69x</td><td>4,880</td><td class="good">200x150</td><td>52.53</td><td class="muted">no</td></tr><tr><td>BMP to PNG 200px R90</td><td>73.04</td><td>70.33</td><td class="bad">0.96x</td><td>74.32</td><td class="good">0.98x</td><td>12.64</td><td>57.32</td><td>0.82</td><td>12.19</td><td>55.06</td><td>0.80</td><td>161.2</td><td>161.0</td><td class="bad">1.00x</td><td>145.2</td><td class="bad">1.11x</td><td>3,701</td><td class="good">150x200</td><td>52.53</td><td class="muted">no</td></tr><tr><td>BMP to PNG 800px R0</td><td>81.22</td><td>80.64</td><td class="bad">0.99x</td><td>97.07</td><td class="good">0.84x</td><td>12.39</td><td>44.22</td><td>21.29</td><td>12.26</td><td>43.98</td><td>21.42</td><td>169.6</td><td>169.9</td><td class="good">1.00x</td><td>105.6</td><td class="bad">1.61x</td><td>414,520</td><td class="good">800x600</td><td>56.45</td><td class="muted">no</td></tr><tr><td>BMP to PNG 800px R90</td><td>112.59</td><td>106.21</td><td class="bad">0.94x</td><td>141.41</td><td class="good">0.80x</td><td>12.71</td><td>66.28</td><td>30.60</td><td>12.32</td><td>60.10</td><td>30.32</td><td>170.7</td><td>170.6</td><td class="bad">1.00x</td><td>153.1</td><td class="bad">1.12x</td><td>566,342</td><td class="good">600x800</td><td>56.45</td><td class="muted">no</td></tr><tr><td>BMP to PNG 1600px R0</td><td>163.35</td><td>161.22</td><td class="bad">0.99x</td><td>239.04</td><td class="good">0.68x</td><td>12.49</td><td>58.21</td><td>88.74</td><td>12.14</td><td>55.79</td><td>89.67</td><td>186.5</td><td>186.7</td><td class="good">1.00x</td><td>120.4</td><td class="bad">1.55x</td><td>1,529,962</td><td class="good">1600x1200</td><td>55.08</td><td class="muted">no</td></tr><tr><td>BMP to PNG 1600px R90</td><td>225.33</td><td>218.19</td><td class="bad">0.97x</td><td>302.12</td><td class="good">0.75x</td><td>12.62</td><td>82.19</td><td>127.25</td><td>12.31</td><td>75.74</td><td>126.67</td><td>189.2</td><td>190.0</td><td class="good">1.00x</td><td>215.0</td><td class="good">0.88x</td><td>2,161,309</td><td class="good">1200x1600</td><td>55.08</td><td class="muted">no</td></tr></tbody></table></div><h2>VP8L</h2><div class="scroll"><table><thead><tr><th>Scenario</th><th>Final total ms</th><th>Baseline total ms</th><th>Baseline / final</th><th>ImageSharp ms</th><th>Final / IS</th><th>Final decode</th><th>Final resize</th><th>Final encode</th><th>Baseline decode</th><th>Baseline resize</th><th>Baseline encode</th><th>Final MiB</th><th>Baseline MiB</th><th>Final / baseline memory</th><th>IS MiB</th><th>Final / IS memory</th><th>Output bytes</th><th>Dimensions</th><th>PSNR dB</th><th>Exact hash</th></tr></thead><tbody><tr><td>VP8L decode 4000x3000</td><td>109.47</td><td>250.87</td><td class="good">2.29x</td><td>139.20</td><td class="good">0.79x</td><td>109.47</td><td>0.00</td><td>0.00</td><td>250.87</td><td>0.00</td><td>0.00</td><td>106.9</td><td>110.6</td><td class="good">0.97x</td><td>177.8</td><td class="good">0.60x</td><td>1,985,083</td><td class="good">4000x3000</td><td>999.00</td><td class="good">yes</td></tr><tr><td>VP8L rotate 4000x3000 R90</td><td>14.55</td><td>14.80</td><td class="good">1.02x</td><td>29.17</td><td class="good">0.50x</td><td>0.00</td><td>14.55</td><td>0.00</td><td>0.00</td><td>14.80</td><td>0.00</td><td>98.8</td><td>116.8</td><td class="good">0.85x</td><td>132.4</td><td class="good">0.75x</td><td>2,673,514</td><td class="good">3000x4000</td><td>999.00</td><td class="good">yes</td></tr><tr><td>VP8L resize 4000x3000 to 1600px</td><td>53.90</td><td>61.80</td><td class="good">1.15x</td><td>59.21</td><td class="good">0.91x</td><td>0.00</td><td>53.90</td><td>0.00</td><td>0.00</td><td>61.80</td><td>0.00</td><td>82.7</td><td>90.9</td><td class="good">0.91x</td><td>84.1</td><td class="good">0.98x</td><td>1,529,962</td><td class="good">1600x1200</td><td>55.08</td><td class="muted">no</td></tr><tr><td>VP8L decoded output to PNG 4000x3000 L6</td><td>127.77</td><td>231.57</td><td class="good">1.81x</td><td>510.21</td><td class="good">0.25x</td><td>0.00</td><td>0.00</td><td>127.39</td><td>0.00</td><td>0.00</td><td>231.27</td><td>59.1</td><td>64.3</td><td class="good">0.92x</td><td>90.1</td><td class="good">0.66x</td><td>1,985,083</td><td class="good">4000x3000</td><td>999.00</td><td class="good">yes</td></tr><tr><td>VP8L to PNG 200px R0</td><td>161.27</td><td>301.01</td><td class="good">1.87x</td><td>183.66</td><td class="good">0.88x</td><td>117.57</td><td>41.33</td><td>0.81</td><td>257.00</td><td>40.83</td><td>0.75</td><td>96.1</td><td>105.8</td><td class="good">0.91x</td><td>157.7</td><td class="good">0.61x</td><td>4,880</td><td class="good">200x150</td><td>52.53</td><td class="muted">no</td></tr><tr><td>VP8L to PNG 200px R90</td><td>175.77</td><td>315.25</td><td class="good">1.79x</td><td>216.17</td><td class="good">0.81x</td><td>112.36</td><td>58.46</td><td>0.81</td><td>252.79</td><td>58.34</td><td>0.84</td><td>96.3</td><td>105.8</td><td class="good">0.91x</td><td>206.2</td><td class="good">0.47x</td><td>3,701</td><td class="good">150x200</td><td>52.53</td><td class="muted">no</td></tr><tr><td>VP8L to PNG 800px R0</td><td>181.94</td><td>318.50</td><td class="good">1.75x</td><td>238.36</td><td class="good">0.76x</td><td>113.21</td><td>45.53</td><td>21.08</td><td>253.08</td><td>42.93</td><td>21.28</td><td>96.7</td><td>106.5</td><td class="good">0.91x</td><td>164.1</td><td class="good">0.59x</td><td>414,520</td><td class="good">800x600</td><td>56.45</td><td class="muted">no</td></tr><tr><td>VP8L to PNG 800px R90</td><td>205.82</td><td>345.85</td><td class="good">1.68x</td><td>274.72</td><td class="good">0.75x</td><td>109.77</td><td>64.47</td><td>29.79</td><td>247.40</td><td>63.02</td><td>31.80</td><td>98.8</td><td>109.4</td><td class="good">0.90x</td><td>213.5</td><td class="good">0.46x</td><td>566,342</td><td class="good">600x800</td><td>56.45</td><td class="muted">no</td></tr><tr><td>VP8L to PNG 1600px R0</td><td>232.59</td><td>408.73</td><td class="good">1.76x</td><td>368.55</td><td class="good">0.63x</td><td>109.36</td><td>56.55</td><td>63.68</td><td>255.22</td><td>60.25</td><td>88.36</td><td>106.8</td><td>112.3</td><td class="good">0.95x</td><td>179.3</td><td class="good">0.60x</td><td>1,529,962</td><td class="good">1600x1200</td><td>55.08</td><td class="muted">no</td></tr><tr><td>VP8L to PNG 1600px R90</td><td>283.91</td><td>496.72</td><td class="good">1.75x</td><td>443.10</td><td class="good">0.64x</td><td>112.53</td><td>78.01</td><td>89.47</td><td>262.72</td><td>94.88</td><td>134.94</td><td>111.8</td><td>119.0</td><td class="good">0.94x</td><td>231.6</td><td class="good">0.48x</td><td>2,161,309</td><td class="good">1200x1600</td><td>55.08</td><td class="muted">no</td></tr></tbody></table></div><h2>VP8</h2><div class="scroll"><table><thead><tr><th>Scenario</th><th>Final total ms</th><th>Baseline total ms</th><th>Baseline / final</th><th>ImageSharp ms</th><th>Final / IS</th><th>Final decode</th><th>Final resize</th><th>Final encode</th><th>Baseline decode</th><th>Baseline resize</th><th>Baseline encode</th><th>Final MiB</th><th>Baseline MiB</th><th>Final / baseline memory</th><th>IS MiB</th><th>Final / IS memory</th><th>Output bytes</th><th>Dimensions</th><th>PSNR dB</th><th>Exact hash</th></tr></thead><tbody><tr><td>VP8 decode 4000x3000</td><td>384.49</td><td>697.85</td><td class="good">1.81x</td><td>474.42</td><td class="good">0.81x</td><td>384.49</td><td>0.00</td><td>0.00</td><td>697.85</td><td>0.00</td><td>0.00</td><td>121.4</td><td>112.7</td><td class="bad">1.08x</td><td>170.6</td><td class="good">0.71x</td><td>5,437,235</td><td class="good">4000x3000</td><td>25.52</td><td class="muted">no</td></tr><tr><td>VP8 rotate 4000x3000 R90</td><td>13.75</td><td>14.48</td><td class="good">1.05x</td><td>31.34</td><td class="good">0.44x</td><td>0.00</td><td>13.75</td><td>0.00</td><td>0.00</td><td>14.48</td><td>0.00</td><td>171.6</td><td>199.2</td><td class="good">0.86x</td><td>266.6</td><td class="good">0.64x</td><td>8,249,207</td><td class="good">3000x4000</td><td>25.52</td><td class="muted">no</td></tr><tr><td>VP8 resize 4000x3000 to 1600px</td><td>54.43</td><td>58.28</td><td class="good">1.07x</td><td>59.35</td><td class="good">0.92x</td><td>0.00</td><td>54.43</td><td>0.00</td><td>0.00</td><td>58.28</td><td>0.00</td><td>93.4</td><td>151.4</td><td class="good">0.62x</td><td>106.9</td><td class="good">0.87x</td><td>2,914,143</td><td class="good">1600x1200</td><td>36.28</td><td class="muted">no</td></tr><tr><td>VP8 decoded output to JPEG 4000x3000 Q85</td><td>117.25</td><td>121.37</td><td class="good">1.04x</td><td>133.35</td><td class="good">0.88x</td><td>0.00</td><td>0.00</td><td>116.14</td><td>0.00</td><td>0.00</td><td>120.16</td><td>109.2</td><td>167.0</td><td class="good">0.65x</td><td>104.1</td><td class="bad">1.05x</td><td>6,324,025</td><td class="good">4000x3000</td><td>23.20</td><td class="muted">no</td></tr><tr><td>VP8 to JPEG 200px R0</td><td>421.77</td><td>738.65</td><td class="good">1.75x</td><td>508.28</td><td class="good">0.83x</td><td>383.90</td><td>35.17</td><td>0.83</td><td>697.06</td><td>35.48</td><td>0.89</td><td>84.6</td><td>108.4</td><td class="good">0.78x</td><td>121.6</td><td class="good">0.70x</td><td>3,280</td><td class="good">200x150</td><td>45.63</td><td class="muted">no</td></tr><tr><td>VP8 to JPEG 200px R90</td><td>447.59</td><td>761.98</td><td class="good">1.70x</td><td>535.58</td><td class="good">0.84x</td><td>386.97</td><td>58.11</td><td>0.83</td><td>698.89</td><td>58.92</td><td>0.91</td><td>85.0</td><td>109.0</td><td class="good">0.78x</td><td>170.7</td><td class="good">0.50x</td><td>4,151</td><td class="good">150x200</td><td>45.25</td><td class="muted">no</td></tr><tr><td>VP8 to JPEG 800px R0</td><td>441.32</td><td>767.92</td><td class="good">1.74x</td><td>527.15</td><td class="good">0.84x</td><td>378.92</td><td>44.26</td><td>14.86</td><td>701.89</td><td>44.73</td><td>15.77</td><td>89.8</td><td>153.3</td><td class="good">0.59x</td><td>127.0</td><td class="good">0.71x</td><td>296,175</td><td class="good">800x600</td><td>34.24</td><td class="muted">no</td></tr><tr><td>VP8 to JPEG 800px R90</td><td>459.10</td><td>777.98</td><td class="good">1.69x</td><td>552.64</td><td class="good">0.83x</td><td>378.73</td><td>61.99</td><td>15.22</td><td>698.36</td><td>61.26</td><td>15.82</td><td>90.0</td><td>127.3</td><td class="good">0.71x</td><td>173.3</td><td class="good">0.52x</td><td>297,010</td><td class="good">600x800</td><td>34.67</td><td class="muted">no</td></tr><tr><td>VP8 to JPEG 1600px R0</td><td>463.95</td><td>773.95</td><td class="good">1.67x</td><td>554.67</td><td class="good">0.84x</td><td>381.91</td><td>57.60</td><td>20.53</td><td>694.47</td><td>55.77</td><td>20.50</td><td>100.8</td><td>142.5</td><td class="good">0.71x</td><td>135.7</td><td class="good">0.74x</td><td>1,211,951</td><td class="good">1600x1200</td><td>30.47</td><td class="muted">no</td></tr><tr><td>VP8 to JPEG 1600px R90</td><td>480.73</td><td>781.63</td><td class="good">1.63x</td><td>579.27</td><td class="good">0.83x</td><td>377.99</td><td>80.29</td><td>20.22</td><td>692.96</td><td>65.41</td><td>20.58</td><td>100.1</td><td>142.6</td><td class="good">0.70x</td><td>177.4</td><td class="good">0.56x</td><td>1,212,856</td><td class="good">1200x1600</td><td>30.48</td><td class="muted">no</td></tr></tbody></table></div><h2>ENCODERS</h2><div class="scroll"><table><thead><tr><th>Scenario</th><th>Final total ms</th><th>Baseline total ms</th><th>Baseline / final</th><th>ImageSharp ms</th><th>Final / IS</th><th>Final decode</th><th>Final resize</th><th>Final encode</th><th>Baseline decode</th><th>Baseline resize</th><th>Baseline encode</th><th>Final MiB</th><th>Baseline MiB</th><th>Final / baseline memory</th><th>IS MiB</th><th>Final / IS memory</th><th>Output bytes</th><th>Dimensions</th><th>PSNR dB</th><th>Exact hash</th></tr></thead><tbody><tr><td>PNG encoder 1600x1200 L6</td><td>89.13</td><td>88.96</td><td class="bad">1.00x</td><td>175.04</td><td class="good">0.51x</td><td>0.00</td><td>0.00</td><td>88.99</td><td>0.00</td><td>0.00</td><td>88.81</td><td>33.6</td><td>33.4</td><td class="bad">1.00x</td><td>43.8</td><td class="good">0.77x</td><td>1,493,343</td><td class="good">1600x1200</td><td>999.00</td><td class="good">yes</td></tr><tr><td>JPEG encoder 1600x1200 Q85</td><td>24.12</td><td>76.25</td><td class="good">3.16x</td><td>24.23</td><td class="good">1.00x</td><td>0.00</td><td>0.00</td><td>24.03</td><td>0.00</td><td>0.00</td><td>76.07</td><td>36.3</td><td>32.9</td><td class="bad">1.10x</td><td>33.5</td><td class="bad">1.08x</td><td>1,183,541</td><td class="good">1600x1200</td><td>37.34</td><td class="muted">no</td></tr></tbody></table></div><h2>Reproduction</h2><p class="note"><code>dotnet run --project benchmarks/Tiesky.Image2D.Benchmarks -c Release -- --suite all --warmups 5 --iterations 15 --baseline _Docs/Implementation/BenchmarkResults.html --html _Docs/Implementation/BenchmarkResults.html</code></p><script id="benchmark-data" type="application/json">{
+  "Final": {
+    "GeneratedUtc": "2026-08-30T14:34:59.091024+00:00",
+    "Iterations": 15,
+    "Warmups": 5,
+    "Environment": {
+      "OperatingSystem": "Microsoft Windows 10.0.26200",
+      "Framework": ".NET 8.0.30",
+      "Architecture": "X64",
+      "ProcessorCount": 12,
+      "Processor": "Intel64 Family 6 Model 158 Stepping 10, GenuineIntel",
+      "ServerGc": false,
+      "TieskyAssembly": "Tiesky.Image2D 1.0.0.0",
+      "ImageSharpAssembly": "SixLabors.ImageSharp 3.1.12 (assembly 3.0.0.0)"
+    },
+    "Scenarios": [
+      {
+        "Key": "jpeg-decode-12mp",
+        "Suite": "jpeg",
+        "Name": "JPEG decode 4000x3000",
+        "Width": 4000,
+        "Rotate": false,
+        "Workload": "Decode",
+        "OutputCodec": "Png",
+        "Tiesky": {
+          "Engine": "tiesky",
+          "MedianMilliseconds": 119.733,
+          "DecodeMilliseconds": 119.733,
+          "TransformMilliseconds": 0,
+          "EncodeMilliseconds": 0,
+          "PeakPrivateBytes": 102555648,
+          "OutputBytes": 2051584
+        },
+        "ImageSharp": {
+          "Engine": "imagesharp",
+          "MedianMilliseconds": 120.1283,
+          "DecodeMilliseconds": 120.1283,
+          "TransformMilliseconds": 0,
+          "EncodeMilliseconds": 0,
+          "PeakPrivateBytes": 150183936,
+          "OutputBytes": 2151617
+        },
+        "OpenOutput": {
+          "Width": 4000,
+          "Height": 3000,
+          "PixelHash": "A943F1229B1C56520B74649A99C58D17CF45FD54E6D456A95A1065EFB488A1FC"
+        },
+        "ImageSharpOutput": {
+          "Width": 4000,
+          "Height": 3000,
+          "PixelHash": "74C76EB6C983CF41CC55EB6A3421281BFAE7E13C315C13B450F6721E5FA2896D"
+        },
+        "Psnr": 25.51474300537931,
+        "ExactPixels": false,
+        "DimensionsMatch": true
+      },
+      {
+        "Key": "jpeg-rotate-12mp-r90",
+        "Suite": "jpeg",
+        "Name": "JPEG rotate 4000x3000 R90",
+        "Width": 4000,
+        "Rotate": true,
+        "Workload": "Rotate",
+        "OutputCodec": "Png",
+        "Tiesky": {
+          "Engine": "tiesky",
+          "MedianMilliseconds": 13.1701,
+          "DecodeMilliseconds": 0,
+          "TransformMilliseconds": 13.1701,
+          "EncodeMilliseconds": 0,
+          "PeakPrivateBytes": 123764736,
+          "OutputBytes": 2779544
+        },
+        "ImageSharp": {
+          "Engine": "imagesharp",
+          "MedianMilliseconds": 32.1836,
+          "DecodeMilliseconds": 0,
+          "TransformMilliseconds": 32.1836,
+          "EncodeMilliseconds": 0,
+          "PeakPrivateBytes": 207740928,
+          "OutputBytes": 2930508
+        },
+        "OpenOutput": {
+          "Width": 3000,
+          "Height": 4000,
+          "PixelHash": "B2BAEF8E2904ECC12B17E609E782C2600FDC70A05B6B7E2BA934D357ABB27419"
+        },
+        "ImageSharpOutput": {
+          "Width": 3000,
+          "Height": 4000,
+          "PixelHash": "A5A5E295CAA4484CCA49431DFB52CDDA5017F2DF2F47171474B95562C8EDB794"
+        },
+        "Psnr": 25.51474300537931,
+        "ExactPixels": false,
+        "DimensionsMatch": true
+      },
+      {
+        "Key": "jpeg-resize-12mp-1600",
+        "Suite": "jpeg",
+        "Name": "JPEG resize 4000x3000 to 1600px",
+        "Width": 1600,
+        "Rotate": false,
+        "Workload": "Resize",
+        "OutputCodec": "Png",
+        "Tiesky": {
+          "Engine": "tiesky",
+          "MedianMilliseconds": 56.6749,
+          "DecodeMilliseconds": 0,
+          "TransformMilliseconds": 56.6749,
+          "EncodeMilliseconds": 0,
+          "PeakPrivateBytes": 107937792,
+          "OutputBytes": 1538940
+        },
+        "ImageSharp": {
+          "Engine": "imagesharp",
+          "MedianMilliseconds": 59.5218,
+          "DecodeMilliseconds": 0,
+          "TransformMilliseconds": 59.5218,
+          "EncodeMilliseconds": 0,
+          "PeakPrivateBytes": 104787968,
+          "OutputBytes": 1827162
+        },
+        "OpenOutput": {
+          "Width": 1600,
+          "Height": 1200,
+          "PixelHash": "A694C261F44828EA6EC59C2527D456B076D9F70290E90D0109AFCFAA07FC6167"
+        },
+        "ImageSharpOutput": {
+          "Width": 1600,
+          "Height": 1200,
+          "PixelHash": "6E1000CAC2A490E184BD626AE8B18B84EBF856928FA56FF4B05BBA7B72B4EE5E"
+        },
+        "Psnr": 36.11278749234101,
+        "ExactPixels": false,
+        "DimensionsMatch": true
+      },
+      {
+        "Key": "jpeg-encode-12mp-q85",
+        "Suite": "jpeg",
+        "Name": "JPEG encoder 4000x3000 Q85",
+        "Width": 4000,
+        "Rotate": false,
+        "Workload": "EncodeDecoded",
+        "OutputCodec": "Jpeg",
+        "Tiesky": {
+          "Engine": "tiesky",
+          "MedianMilliseconds": 113.1866,
+          "DecodeMilliseconds": 0,
+          "TransformMilliseconds": 0,
+          "EncodeMilliseconds": 112.0246,
+          "PeakPrivateBytes": 104407040,
+          "OutputBytes": 5992879
+        },
+        "ImageSharp": {
+          "Engine": "imagesharp",
+          "MedianMilliseconds": 140.8858,
+          "DecodeMilliseconds": 0,
+          "TransformMilliseconds": 0,
+          "EncodeMilliseconds": 139.8833,
+          "PeakPrivateBytes": 163151872,
+          "OutputBytes": 6573560
+        },
+        "OpenOutput": {
+          "Width": 4000,
+          "Height": 3000,
+          "PixelHash": "377A706716DC6856A9CDB584F1DB8D6D5FA83D2087241F4EBA574E5E3BEE3E89"
+        },
+        "ImageSharpOutput": {
+          "Width": 4000,
+          "Height": 3000,
+          "PixelHash": "D939529A402A3EC216C631DD6AAF6A637509A31609ECA1EAAD1DBF5A7C82120C"
+        },
+        "Psnr": 22.177491017197116,
+        "ExactPixels": false,
+        "DimensionsMatch": true
+      },
+      {
+        "Key": "jpeg-200-r0",
+        "Suite": "jpeg",
+        "Name": "JPEG to JPEG 200px R0",
+        "Width": 200,
+        "Rotate": false,
+        "Workload": "Transform",
+        "OutputCodec": "Jpeg",
+        "Tiesky": {
+          "Engine": "tiesky",
+          "MedianMilliseconds": 114.6278,
+          "DecodeMilliseconds": 109.129,
+          "TransformMilliseconds": 4.4208,
+          "EncodeMilliseconds": 0.6151,
+          "PeakPrivateBytes": 44851200,
+          "OutputBytes": 2985
+        },
+        "ImageSharp": {
+          "Engine": "imagesharp",
+          "MedianMilliseconds": 147.8853,
+          "DecodeMilliseconds": 120.0448,
+          "TransformMilliseconds": 27.8269,
+          "EncodeMilliseconds": 0.2397,
+          "PeakPrivateBytes": 60829696,
+          "OutputBytes": 3194
+        },
+        "OpenOutput": {
+          "Width": 200,
+          "Height": 150,
+          "PixelHash": "4B907689BDDC3C1B2538D5515A07912E7252935ECB14ED95FC8C94C71D94A8B9"
+        },
+        "ImageSharpOutput": {
+          "Width": 200,
+          "Height": 150,
+          "PixelHash": "CBFD193BDBE2573839365C8A162971AD78749AD25BED7A6B5E5E6BC407006930"
+        },
+        "Psnr": 38.325497894046435,
+        "ExactPixels": false,
+        "DimensionsMatch": true
+      },
+      {
+        "Key": "jpeg-200-r90",
+        "Suite": "jpeg",
+        "Name": "JPEG to JPEG 200px R90",
+        "Width": 200,
+        "Rotate": true,
+        "Workload": "Transform",
+        "OutputCodec": "Jpeg",
+        "Tiesky": {
+          "Engine": "tiesky",
+          "MedianMilliseconds": 115.3655,
+          "DecodeMilliseconds": 109.5194,
+          "TransformMilliseconds": 4.7716,
+          "EncodeMilliseconds": 0.6526,
+          "PeakPrivateBytes": 44904448,
+          "OutputBytes": 4081
+        },
+        "ImageSharp": {
+          "Engine": "imagesharp",
+          "MedianMilliseconds": 178.2087,
+          "DecodeMilliseconds": 120.0223,
+          "TransformMilliseconds": 57.9869,
+          "EncodeMilliseconds": 0.2501,
+          "PeakPrivateBytes": 100794368,
+          "OutputBytes": 4263
+        },
+        "OpenOutput": {
+          "Width": 150,
+          "Height": 200,
+          "PixelHash": "3355A7258E66695CD71B5CD12DFA584660741A0F73D4A0E14C6C0FC981E34C9B"
+        },
+        "ImageSharpOutput": {
+          "Width": 150,
+          "Height": 200,
+          "PixelHash": "EA25D62E4FB74A77AC7D6A4C143F3EB500670BA8A9E6132D3302EA6FEEFF86B2"
+        },
+        "Psnr": 39.58789841913135,
+        "ExactPixels": false,
+        "DimensionsMatch": true
+      },
+      {
+        "Key": "jpeg-800-r0",
+        "Suite": "jpeg",
+        "Name": "JPEG to JPEG 800px R0",
+        "Width": 800,
+        "Rotate": false,
+        "Workload": "Transform",
+        "OutputCodec": "Jpeg",
+        "Tiesky": {
+          "Engine": "tiesky",
+          "MedianMilliseconds": 124.2004,
+          "DecodeMilliseconds": 102.6635,
+          "TransformMilliseconds": 6.0515,
+          "EncodeMilliseconds": 14.694,
+          "PeakPrivateBytes": 62226432,
+          "OutputBytes": 267028
+        },
+        "ImageSharp": {
+          "Engine": "imagesharp",
+          "MedianMilliseconds": 169.284,
+          "DecodeMilliseconds": 119.5908,
+          "TransformMilliseconds": 43.6915,
+          "EncodeMilliseconds": 5.8652,
+          "PeakPrivateBytes": 67796992,
+          "OutputBytes": 296144
+        },
+        "OpenOutput": {
+          "Width": 800,
+          "Height": 600,
+          "PixelHash": "CD71B1C011F84BCE99D588CB4A975A9486C9F4D7B1FCBA7D9189E34F1792C24D"
+        },
+        "ImageSharpOutput": {
+          "Width": 800,
+          "Height": 600,
+          "PixelHash": "125E1B7E43307CF08BB333E44CD346D1A48721F468354BF583CC57C217762856"
+        },
+        "Psnr": 20.70263156808146,
+        "ExactPixels": false,
+        "DimensionsMatch": true
+      },
+      {
+        "Key": "jpeg-800-r90",
+        "Suite": "jpeg",
+        "Name": "JPEG to JPEG 800px R90",
+        "Width": 800,
+        "Rotate": true,
+        "Workload": "Transform",
+        "OutputCodec": "Jpeg",
+        "Tiesky": {
+          "Engine": "tiesky",
+          "MedianMilliseconds": 129.0575,
+          "DecodeMilliseconds": 106.2152,
+          "TransformMilliseconds": 7.346,
+          "EncodeMilliseconds": 14.7964,
+          "PeakPrivateBytes": 62279680,
+          "OutputBytes": 266685
+        },
+        "ImageSharp": {
+          "Engine": "imagesharp",
+          "MedianMilliseconds": 203.6106,
+          "DecodeMilliseconds": 120.1772,
+          "TransformMilliseconds": 76.4969,
+          "EncodeMilliseconds": 6.1504,
+          "PeakPrivateBytes": 103071744,
+          "OutputBytes": 297263
+        },
+        "OpenOutput": {
+          "Width": 600,
+          "Height": 800,
+          "PixelHash": "6DA5065CDA7BADDCF0ADCC974812DC360A41A0531DBC09DA3634E13B0E13F991"
+        },
+        "ImageSharpOutput": {
+          "Width": 600,
+          "Height": 800,
+          "PixelHash": "C35923421C5E0D8612E26FD1F0718EA6546FCAB098E576A450D477D7AC0ABF16"
+        },
+        "Psnr": 20.87895014580582,
+        "ExactPixels": false,
+        "DimensionsMatch": true
+      },
+      {
+        "Key": "jpeg-1600-r0",
+        "Suite": "jpeg",
+        "Name": "JPEG to JPEG 1600px R0",
+        "Width": 1600,
+        "Rotate": false,
+        "Workload": "Transform",
+        "OutputCodec": "Jpeg",
+        "Tiesky": {
+          "Engine": "tiesky",
+          "MedianMilliseconds": 155.9427,
+          "DecodeMilliseconds": 110.4972,
+          "TransformMilliseconds": 23.6395,
+          "EncodeMilliseconds": 19.302,
+          "PeakPrivateBytes": 83984384,
+          "OutputBytes": 1133758
+        },
+        "ImageSharp": {
+          "Engine": "imagesharp",
+          "MedianMilliseconds": 211.6032,
+          "DecodeMilliseconds": 121.3937,
+          "TransformMilliseconds": 64.5131,
+          "EncodeMilliseconds": 24.4223,
+          "PeakPrivateBytes": 81035264,
+          "OutputBytes": 1215438
+        },
+        "OpenOutput": {
+          "Width": 1600,
+          "Height": 1200,
+          "PixelHash": "C302FF2C1BB2BE90E041CBFF24CE04BDDE07E02BD026C6FEF1B2342EB62361FE"
+        },
+        "ImageSharpOutput": {
+          "Width": 1600,
+          "Height": 1200,
+          "PixelHash": "4B09EA14DDEAED691EEEDEBB599DCFD54C61B8F98DE92ABC913442AA7A73B685"
+        },
+        "Psnr": 23.381475762798658,
+        "ExactPixels": false,
+        "DimensionsMatch": true
+      },
+      {
+        "Key": "jpeg-1600-r90",
+        "Suite": "jpeg",
+        "Name": "JPEG to JPEG 1600px R90",
+        "Width": 1600,
+        "Rotate": true,
+        "Workload": "Transform",
+        "OutputCodec": "Jpeg",
+        "Tiesky": {
+          "Engine": "tiesky",
+          "MedianMilliseconds": 167.1631,
+          "DecodeMilliseconds": 115.7772,
+          "TransformMilliseconds": 28.1601,
+          "EncodeMilliseconds": 20.7084,
+          "PeakPrivateBytes": 83943424,
+          "OutputBytes": 1137440
+        },
+        "ImageSharp": {
+          "Engine": "imagesharp",
+          "MedianMilliseconds": 249.4696,
+          "DecodeMilliseconds": 123.204,
+          "TransformMilliseconds": 101.2408,
+          "EncodeMilliseconds": 24.9026,
+          "PeakPrivateBytes": 112865280,
+          "OutputBytes": 1215528
+        },
+        "OpenOutput": {
+          "Width": 1200,
+          "Height": 1600,
+          "PixelHash": "DF1CE844F061740D7514CDACDF2485ACF129F6AE57C1A73F0CFB422696F5E96F"
+        },
+        "ImageSharpOutput": {
+          "Width": 1200,
+          "Height": 1600,
+          "PixelHash": "FBF64DDF34E3F5C90A1E07BE13709AE5C55A3ADB6BF81359110BD4E836020E96"
+        },
+        "Psnr": 23.403309911832103,
+        "ExactPixels": false,
+        "DimensionsMatch": true
+      },
+      {
+        "Key": "png-decode-12mp",
+        "Suite": "png",
+        "Name": "PNG decode 4000x3000",
+        "Width": 4000,
+        "Rotate": false,
+        "Workload": "Decode",
+        "OutputCodec": "Png",
+        "Tiesky": {
+          "Engine": "tiesky",
+          "MedianMilliseconds": 86.2938,
+          "DecodeMilliseconds": 86.2938,
+          "TransformMilliseconds": 0,
+          "EncodeMilliseconds": 0,
+          "PeakPrivateBytes": 60948480,
+          "OutputBytes": 1985083
+        },
+        "ImageSharp": {
+          "Engine": "imagesharp",
+          "MedianMilliseconds": 123.7991,
+          "DecodeMilliseconds": 123.7991,
+          "TransformMilliseconds": 0,
+          "EncodeMilliseconds": 0,
+          "PeakPrivateBytes": 80523264,
+          "OutputBytes": 1867073
+        },
+        "OpenOutput": {
+          "Width": 4000,
+          "Height": 3000,
+          "PixelHash": "74C76EB6C983CF41CC55EB6A3421281BFAE7E13C315C13B450F6721E5FA2896D"
+        },
+        "ImageSharpOutput": {
+          "Width": 4000,
+          "Height": 3000,
+          "PixelHash": "74C76EB6C983CF41CC55EB6A3421281BFAE7E13C315C13B450F6721E5FA2896D"
+        },
+        "Psnr": 999,
+        "ExactPixels": true,
+        "DimensionsMatch": true
+      },
+      {
+        "Key": "png-rotate-12mp-r90",
+        "Suite": "png",
+        "Name": "PNG rotate 4000x3000 R90",
+        "Width": 4000,
+        "Rotate": true,
+        "Workload": "Rotate",
+        "OutputCodec": "Png",
+        "Tiesky": {
+          "Engine": "tiesky",
+          "MedianMilliseconds": 14.2338,
+          "DecodeMilliseconds": 0,
+          "TransformMilliseconds": 14.2338,
+          "EncodeMilliseconds": 0,
+          "PeakPrivateBytes": 106889216,
+          "OutputBytes": 2673514
+        },
+        "ImageSharp": {
+          "Engine": "imagesharp",
+          "MedianMilliseconds": 30.2443,
+          "DecodeMilliseconds": 0,
+          "TransformMilliseconds": 30.2443,
+          "EncodeMilliseconds": 0,
+          "PeakPrivateBytes": 142487552,
+          "OutputBytes": 2559497
+        },
+        "OpenOutput": {
+          "Width": 3000,
+          "Height": 4000,
+          "PixelHash": "A5A5E295CAA4484CCA49431DFB52CDDA5017F2DF2F47171474B95562C8EDB794"
+        },
+        "ImageSharpOutput": {
+          "Width": 3000,
+          "Height": 4000,
+          "PixelHash": "A5A5E295CAA4484CCA49431DFB52CDDA5017F2DF2F47171474B95562C8EDB794"
+        },
+        "Psnr": 999,
+        "ExactPixels": true,
+        "DimensionsMatch": true
+      },
+      {
+        "Key": "png-encode-12mp-l6",
+        "Suite": "png",
+        "Name": "PNG encoder 4000x3000 L6",
+        "Width": 4000,
+        "Rotate": false,
+        "Workload": "EncodeDecoded",
+        "OutputCodec": "Png",
+        "Tiesky": {
+          "Engine": "tiesky",
+          "MedianMilliseconds": 129.735,
+          "DecodeMilliseconds": 0,
+          "TransformMilliseconds": 0,
+          "EncodeMilliseconds": 129.4179,
+          "PeakPrivateBytes": 61321216,
+          "OutputBytes": 1985083
+        },
+        "ImageSharp": {
+          "Engine": "imagesharp",
+          "MedianMilliseconds": 333.0055,
+          "DecodeMilliseconds": 0,
+          "TransformMilliseconds": 0,
+          "EncodeMilliseconds": 332.744,
+          "PeakPrivateBytes": 79400960,
+          "OutputBytes": 1867073
+        },
+        "OpenOutput": {
+          "Width": 4000,
+          "Height": 3000,
+          "PixelHash": "74C76EB6C983CF41CC55EB6A3421281BFAE7E13C315C13B450F6721E5FA2896D"
+        },
+        "ImageSharpOutput": {
+          "Width": 4000,
+          "Height": 3000,
+          "PixelHash": "74C76EB6C983CF41CC55EB6A3421281BFAE7E13C315C13B450F6721E5FA2896D"
+        },
+        "Psnr": 999,
+        "ExactPixels": true,
+        "DimensionsMatch": true
+      },
+      {
+        "Key": "png-200-r0",
+        "Suite": "png",
+        "Name": "PNG to PNG 200px R0",
+        "Width": 200,
+        "Rotate": false,
+        "Workload": "Transform",
+        "OutputCodec": "Png",
+        "Tiesky": {
+          "Engine": "tiesky",
+          "MedianMilliseconds": 128.8035,
+          "DecodeMilliseconds": 87.7839,
+          "TransformMilliseconds": 38.2664,
+          "EncodeMilliseconds": 0.7933,
+          "PeakPrivateBytes": 54812672,
+          "OutputBytes": 4880
+        },
+        "ImageSharp": {
+          "Engine": "imagesharp",
+          "MedianMilliseconds": 147.5629,
+          "DecodeMilliseconds": 118.6309,
+          "TransformMilliseconds": 27.5699,
+          "EncodeMilliseconds": 0.8753,
+          "PeakPrivateBytes": 54837248,
+          "OutputBytes": 4505
+        },
+        "OpenOutput": {
+          "Width": 200,
+          "Height": 150,
+          "PixelHash": "C914A986C201A2407D5464DCDF94DC936DD47EBE0AC2CD553D0468F08CFE4C7B"
+        },
+        "ImageSharpOutput": {
+          "Width": 200,
+          "Height": 150,
+          "PixelHash": "00B8B73CAFEC9A2966C1AF0EB3CE94CC8415C93EC33B28BA913730B9F1505004"
+        },
+        "Psnr": 52.526688812271665,
+        "ExactPixels": false,
+        "DimensionsMatch": true
+      },
+      {
+        "Key": "png-200-r90",
+        "Suite": "png",
+        "Name": "PNG to PNG 200px R90",
+        "Width": 200,
+        "Rotate": true,
+        "Workload": "Transform",
+        "OutputCodec": "Png",
+        "Tiesky": {
+          "Engine": "tiesky",
+          "MedianMilliseconds": 135.3911,
+          "DecodeMilliseconds": 87.1858,
+          "TransformMilliseconds": 45.589,
+          "EncodeMilliseconds": 0.8491,
+          "PeakPrivateBytes": 55287808,
+          "OutputBytes": 3701
+        },
+        "ImageSharp": {
+          "Engine": "imagesharp",
+          "MedianMilliseconds": 178.4675,
+          "DecodeMilliseconds": 120.3748,
+          "TransformMilliseconds": 56.9987,
+          "EncodeMilliseconds": 0.829,
+          "PeakPrivateBytes": 93777920,
+          "OutputBytes": 3618
+        },
+        "OpenOutput": {
+          "Width": 150,
+          "Height": 200,
+          "PixelHash": "4A593B10F5AF4EFD92E69DCE5CEE94A4ECB5BD9D5DFB654BC277D28256B2836C"
+        },
+        "ImageSharpOutput": {
+          "Width": 150,
+          "Height": 200,
+          "PixelHash": "B9AEE74BECF22B7C7CFD91408A7B986CFB3C9876F36931506493E86BDA6A7908"
+        },
+        "Psnr": 52.526688812271665,
+        "ExactPixels": false,
+        "DimensionsMatch": true
+      },
+      {
+        "Key": "png-800-r0",
+        "Suite": "png",
+        "Name": "PNG to PNG 800px R0",
+        "Width": 800,
+        "Rotate": false,
+        "Workload": "Transform",
+        "OutputCodec": "Png",
+        "Tiesky": {
+          "Engine": "tiesky",
+          "MedianMilliseconds": 155.7117,
+          "DecodeMilliseconds": 87.7984,
+          "TransformMilliseconds": 43.5484,
+          "EncodeMilliseconds": 22.1672,
+          "PeakPrivateBytes": 63758336,
+          "OutputBytes": 414520
+        },
+        "ImageSharp": {
+          "Engine": "imagesharp",
+          "MedianMilliseconds": 184.5134,
+          "DecodeMilliseconds": 119.1261,
+          "TransformMilliseconds": 44.33,
+          "EncodeMilliseconds": 20.8926,
+          "PeakPrivateBytes": 62824448,
+          "OutputBytes": 413241
+        },
+        "OpenOutput": {
+          "Width": 800,
+          "Height": 600,
+          "PixelHash": "E677CA621253CBAE0FFEC4DF6DF58167B031B3EBE5220AC855BBAF416933C27A"
+        },
+        "ImageSharpOutput": {
+          "Width": 800,
+          "Height": 600,
+          "PixelHash": "697BEB8161532AAD50EFEC402969548BC18BDF7C7174B2E6EAC2D9474B512470"
+        },
+        "Psnr": 56.448673767599836,
+        "ExactPixels": false,
+        "DimensionsMatch": true
+      },
+      {
+        "Key": "png-800-r90",
+        "Suite": "png",
+        "Name": "PNG to PNG 800px R90",
+        "Width": 800,
+        "Rotate": true,
+        "Workload": "Transform",
+        "OutputCodec": "Png",
+        "Tiesky": {
+          "Engine": "tiesky",
+          "MedianMilliseconds": 178.5148,
+          "DecodeMilliseconds": 85.2733,
+          "TransformMilliseconds": 60.0409,
+          "EncodeMilliseconds": 29.9492,
+          "PeakPrivateBytes": 65019904,
+          "OutputBytes": 566342
+        },
+        "ImageSharp": {
+          "Engine": "imagesharp",
+          "MedianMilliseconds": 232.194,
+          "DecodeMilliseconds": 128.4389,
+          "TransformMilliseconds": 74.7553,
+          "EncodeMilliseconds": 28.5548,
+          "PeakPrivateBytes": 100593664,
+          "OutputBytes": 566280
+        },
+        "OpenOutput": {
+          "Width": 600,
+          "Height": 800,
+          "PixelHash": "6994F7D36B4B558E3D0D1E08C3D61AB314523637B271EDC89BB022CE15A526BF"
+        },
+        "ImageSharpOutput": {
+          "Width": 600,
+          "Height": 800,
+          "PixelHash": "ACCEA71D57C61D52FF5FD5FF5921ADE89B336B7B9218A01E71FEA220426BE731"
+        },
+        "Psnr": 56.448673767599836,
+        "ExactPixels": false,
+        "DimensionsMatch": true
+      },
+      {
+        "Key": "png-1600-r0",
+        "Suite": "png",
+        "Name": "PNG to PNG 1600px R0",
+        "Width": 1600,
+        "Rotate": false,
+        "Workload": "Transform",
+        "OutputCodec": "Png",
+        "Tiesky": {
+          "Engine": "tiesky",
+          "MedianMilliseconds": 210.118,
+          "DecodeMilliseconds": 85.6117,
+          "TransformMilliseconds": 57.5382,
+          "EncodeMilliseconds": 63.4868,
+          "PeakPrivateBytes": 83849216,
+          "OutputBytes": 1529962
+        },
+        "ImageSharp": {
+          "Engine": "imagesharp",
+          "MedianMilliseconds": 289.4625,
+          "DecodeMilliseconds": 136.3537,
+          "TransformMilliseconds": 65.9491,
+          "EncodeMilliseconds": 87.0991,
+          "PeakPrivateBytes": 77492224,
+          "OutputBytes": 1511627
+        },
+        "OpenOutput": {
+          "Width": 1600,
+          "Height": 1200,
+          "PixelHash": "F139F56C046AE2E19460F6712DE158CF4FC0B20EF24E9DDD9B5D867C75269D2F"
+        },
+        "ImageSharpOutput": {
+          "Width": 1600,
+          "Height": 1200,
+          "PixelHash": "6E1000CAC2A490E184BD626AE8B18B84EBF856928FA56FF4B05BBA7B72B4EE5E"
+        },
+        "Psnr": 55.07740935878221,
+        "ExactPixels": false,
+        "DimensionsMatch": true
+      },
+      {
+        "Key": "png-1600-r90",
+        "Suite": "png",
+        "Name": "PNG to PNG 1600px R90",
+        "Width": 1600,
+        "Rotate": true,
+        "Workload": "Transform",
+        "OutputCodec": "Png",
+        "Tiesky": {
+          "Engine": "tiesky",
+          "MedianMilliseconds": 254.712,
+          "DecodeMilliseconds": 87.6001,
+          "TransformMilliseconds": 76.1461,
+          "EncodeMilliseconds": 87.3295,
+          "PeakPrivateBytes": 90746880,
+          "OutputBytes": 2161309
+        },
+        "ImageSharp": {
+          "Engine": "imagesharp",
+          "MedianMilliseconds": 337.2424,
+          "DecodeMilliseconds": 129.6715,
+          "TransformMilliseconds": 99.4712,
+          "EncodeMilliseconds": 107.2885,
+          "PeakPrivateBytes": 157868032,
+          "OutputBytes": 2151766
+        },
+        "OpenOutput": {
+          "Width": 1200,
+          "Height": 1600,
+          "PixelHash": "F1EC06808B560F0F5F3665DF27BA7AB3B0EF4AF3283208D3C266AD83B570C121"
+        },
+        "ImageSharpOutput": {
+          "Width": 1200,
+          "Height": 1600,
+          "PixelHash": "F6C09E708C5F38AFCD08139F3AA46578E8870C81A4C3CC2114A23231E228235E"
+        },
+        "Psnr": 55.07740935878221,
+        "ExactPixels": false,
+        "DimensionsMatch": true
+      },
+      {
+        "Key": "bmp-200-r0",
+        "Suite": "bmp",
+        "Name": "BMP to PNG 200px R0",
+        "Width": 200,
+        "Rotate": false,
+        "Workload": "Transform",
+        "OutputCodec": "Png",
+        "Tiesky": {
+          "Engine": "tiesky",
+          "MedianMilliseconds": 52.8594,
+          "DecodeMilliseconds": 12.937,
+          "TransformMilliseconds": 36.2664,
+          "EncodeMilliseconds": 0.7781,
+          "PeakPrivateBytes": 168017920,
+          "OutputBytes": 4880
+        },
+        "ImageSharp": {
+          "Engine": "imagesharp",
+          "MedianMilliseconds": 39.7045,
+          "DecodeMilliseconds": 8.8533,
+          "TransformMilliseconds": 29.2249,
+          "EncodeMilliseconds": 1.5691,
+          "PeakPrivateBytes": 99614720,
+          "OutputBytes": 5020
+        },
+        "OpenOutput": {
+          "Width": 200,
+          "Height": 150,
+          "PixelHash": "C914A986C201A2407D5464DCDF94DC936DD47EBE0AC2CD553D0468F08CFE4C7B"
+        },
+        "ImageSharpOutput": {
+          "Width": 200,
+          "Height": 150,
+          "PixelHash": "00B8B73CAFEC9A2966C1AF0EB3CE94CC8415C93EC33B28BA913730B9F1505004"
+        },
+        "Psnr": 52.526688812271665,
+        "ExactPixels": false,
+        "DimensionsMatch": true
+      },
+      {
+        "Key": "bmp-200-r90",
+        "Suite": "bmp",
+        "Name": "BMP to PNG 200px R90",
+        "Width": 200,
+        "Rotate": true,
+        "Workload": "Transform",
+        "OutputCodec": "Png",
+        "Tiesky": {
+          "Engine": "tiesky",
+          "MedianMilliseconds": 73.0405,
+          "DecodeMilliseconds": 12.6406,
+          "TransformMilliseconds": 57.3232,
+          "EncodeMilliseconds": 0.819,
+          "PeakPrivateBytes": 169005056,
+          "OutputBytes": 3701
+        },
+        "ImageSharp": {
+          "Engine": "imagesharp",
+          "MedianMilliseconds": 74.3224,
+          "DecodeMilliseconds": 8.8424,
+          "TransformMilliseconds": 63.4671,
+          "EncodeMilliseconds": 1.7124,
+          "PeakPrivateBytes": 152305664,
+          "OutputBytes": 6071
+        },
+        "OpenOutput": {
+          "Width": 150,
+          "Height": 200,
+          "PixelHash": "4A593B10F5AF4EFD92E69DCE5CEE94A4ECB5BD9D5DFB654BC277D28256B2836C"
+        },
+        "ImageSharpOutput": {
+          "Width": 150,
+          "Height": 200,
+          "PixelHash": "B9AEE74BECF22B7C7CFD91408A7B986CFB3C9876F36931506493E86BDA6A7908"
+        },
+        "Psnr": 52.526688812271665,
+        "ExactPixels": false,
+        "DimensionsMatch": true
+      },
+      {
+        "Key": "bmp-800-r0",
+        "Suite": "bmp",
+        "Name": "BMP to PNG 800px R0",
+        "Width": 800,
+        "Rotate": false,
+        "Workload": "Transform",
+        "OutputCodec": "Png",
+        "Tiesky": {
+          "Engine": "tiesky",
+          "MedianMilliseconds": 81.2151,
+          "DecodeMilliseconds": 12.3884,
+          "TransformMilliseconds": 44.2244,
+          "EncodeMilliseconds": 21.2864,
+          "PeakPrivateBytes": 177860608,
+          "OutputBytes": 414520
+        },
+        "ImageSharp": {
+          "Engine": "imagesharp",
+          "MedianMilliseconds": 97.0708,
+          "DecodeMilliseconds": 8.1034,
+          "TransformMilliseconds": 43.4422,
+          "EncodeMilliseconds": 45.5219,
+          "PeakPrivateBytes": 110710784,
+          "OutputBytes": 483623
+        },
+        "OpenOutput": {
+          "Width": 800,
+          "Height": 600,
+          "PixelHash": "E677CA621253CBAE0FFEC4DF6DF58167B031B3EBE5220AC855BBAF416933C27A"
+        },
+        "ImageSharpOutput": {
+          "Width": 800,
+          "Height": 600,
+          "PixelHash": "697BEB8161532AAD50EFEC402969548BC18BDF7C7174B2E6EAC2D9474B512470"
+        },
+        "Psnr": 56.448673767599836,
+        "ExactPixels": false,
+        "DimensionsMatch": true
+      },
+      {
+        "Key": "bmp-800-r90",
+        "Suite": "bmp",
+        "Name": "BMP to PNG 800px R90",
+        "Width": 800,
+        "Rotate": true,
+        "Workload": "Transform",
+        "OutputCodec": "Png",
+        "Tiesky": {
+          "Engine": "tiesky",
+          "MedianMilliseconds": 112.5919,
+          "DecodeMilliseconds": 12.7081,
+          "TransformMilliseconds": 66.2763,
+          "EncodeMilliseconds": 30.5974,
+          "PeakPrivateBytes": 179036160,
+          "OutputBytes": 566342
+        },
+        "ImageSharp": {
+          "Engine": "imagesharp",
+          "MedianMilliseconds": 141.413,
+          "DecodeMilliseconds": 8.0695,
+          "TransformMilliseconds": 73.5366,
+          "EncodeMilliseconds": 59.5676,
+          "PeakPrivateBytes": 160522240,
+          "OutputBytes": 657411
+        },
+        "OpenOutput": {
+          "Width": 600,
+          "Height": 800,
+          "PixelHash": "6994F7D36B4B558E3D0D1E08C3D61AB314523637B271EDC89BB022CE15A526BF"
+        },
+        "ImageSharpOutput": {
+          "Width": 600,
+          "Height": 800,
+          "PixelHash": "ACCEA71D57C61D52FF5FD5FF5921ADE89B336B7B9218A01E71FEA220426BE731"
+        },
+        "Psnr": 56.448673767599836,
+        "ExactPixels": false,
+        "DimensionsMatch": true
+      },
+      {
+        "Key": "bmp-1600-r0",
+        "Suite": "bmp",
+        "Name": "BMP to PNG 1600px R0",
+        "Width": 1600,
+        "Rotate": false,
+        "Workload": "Transform",
+        "OutputCodec": "Png",
+        "Tiesky": {
+          "Engine": "tiesky",
+          "MedianMilliseconds": 163.3546,
+          "DecodeMilliseconds": 12.4893,
+          "TransformMilliseconds": 58.2102,
+          "EncodeMilliseconds": 88.7412,
+          "PeakPrivateBytes": 195563520,
+          "OutputBytes": 1529962
+        },
+        "ImageSharp": {
+          "Engine": "imagesharp",
+          "MedianMilliseconds": 239.0435,
+          "DecodeMilliseconds": 8.6221,
+          "TransformMilliseconds": 60.4318,
+          "EncodeMilliseconds": 166.0133,
+          "PeakPrivateBytes": 126279680,
+          "OutputBytes": 1827162
+        },
+        "OpenOutput": {
+          "Width": 1600,
+          "Height": 1200,
+          "PixelHash": "F139F56C046AE2E19460F6712DE158CF4FC0B20EF24E9DDD9B5D867C75269D2F"
+        },
+        "ImageSharpOutput": {
+          "Width": 1600,
+          "Height": 1200,
+          "PixelHash": "6E1000CAC2A490E184BD626AE8B18B84EBF856928FA56FF4B05BBA7B72B4EE5E"
+        },
+        "Psnr": 55.07740935878221,
+        "ExactPixels": false,
+        "DimensionsMatch": true
+      },
+      {
+        "Key": "bmp-1600-r90",
+        "Suite": "bmp",
+        "Name": "BMP to PNG 1600px R90",
+        "Width": 1600,
+        "Rotate": true,
+        "Workload": "Transform",
+        "OutputCodec": "Png",
+        "Tiesky": {
+          "Engine": "tiesky",
+          "MedianMilliseconds": 225.3262,
+          "DecodeMilliseconds": 12.6191,
+          "TransformMilliseconds": 82.1857,
+          "EncodeMilliseconds": 127.2501,
+          "PeakPrivateBytes": 198352896,
+          "OutputBytes": 2161309
+        },
+        "ImageSharp": {
+          "Engine": "imagesharp",
+          "MedianMilliseconds": 302.115,
+          "DecodeMilliseconds": 8.3234,
+          "TransformMilliseconds": 90.392,
+          "EncodeMilliseconds": 201.4795,
+          "PeakPrivateBytes": 225476608,
+          "OutputBytes": 2548724
+        },
+        "OpenOutput": {
+          "Width": 1200,
+          "Height": 1600,
+          "PixelHash": "F1EC06808B560F0F5F3665DF27BA7AB3B0EF4AF3283208D3C266AD83B570C121"
+        },
+        "ImageSharpOutput": {
+          "Width": 1200,
+          "Height": 1600,
+          "PixelHash": "F6C09E708C5F38AFCD08139F3AA46578E8870C81A4C3CC2114A23231E228235E"
+        },
+        "Psnr": 55.07740935878221,
+        "ExactPixels": false,
+        "DimensionsMatch": true
+      },
+      {
+        "Key": "vp8l-decode-12mp",
+        "Suite": "vp8l",
+        "Name": "VP8L decode 4000x3000",
+        "Width": 4000,
+        "Rotate": false,
+        "Workload": "Decode",
+        "OutputCodec": "Png",
+        "Tiesky": {
+          "Engine": "tiesky",
+          "MedianMilliseconds": 109.4712,
+          "DecodeMilliseconds": 109.4712,
+          "TransformMilliseconds": 0,
+          "EncodeMilliseconds": 0,
+          "PeakPrivateBytes": 112111616,
+          "OutputBytes": 1985083
+        },
+        "ImageSharp": {
+          "Engine": "imagesharp",
+          "MedianMilliseconds": 139.201,
+          "DecodeMilliseconds": 139.201,
+          "TransformMilliseconds": 0,
+          "EncodeMilliseconds": 0,
+          "PeakPrivateBytes": 186474496,
+          "OutputBytes": 2151617
+        },
+        "OpenOutput": {
+          "Width": 4000,
+          "Height": 3000,
+          "PixelHash": "74C76EB6C983CF41CC55EB6A3421281BFAE7E13C315C13B450F6721E5FA2896D"
+        },
+        "ImageSharpOutput": {
+          "Width": 4000,
+          "Height": 3000,
+          "PixelHash": "74C76EB6C983CF41CC55EB6A3421281BFAE7E13C315C13B450F6721E5FA2896D"
+        },
+        "Psnr": 999,
+        "ExactPixels": true,
+        "DimensionsMatch": true
+      },
+      {
+        "Key": "vp8l-rotate-12mp-r90",
+        "Suite": "vp8l",
+        "Name": "VP8L rotate 4000x3000 R90",
+        "Width": 4000,
+        "Rotate": true,
+        "Workload": "Rotate",
+        "OutputCodec": "Png",
+        "Tiesky": {
+          "Engine": "tiesky",
+          "MedianMilliseconds": 14.5536,
+          "DecodeMilliseconds": 0,
+          "TransformMilliseconds": 14.5536,
+          "EncodeMilliseconds": 0,
+          "PeakPrivateBytes": 103575552,
+          "OutputBytes": 2673514
+        },
+        "ImageSharp": {
+          "Engine": "imagesharp",
+          "MedianMilliseconds": 29.1737,
+          "DecodeMilliseconds": 0,
+          "TransformMilliseconds": 29.1737,
+          "EncodeMilliseconds": 0,
+          "PeakPrivateBytes": 138842112,
+          "OutputBytes": 2930508
+        },
+        "OpenOutput": {
+          "Width": 3000,
+          "Height": 4000,
+          "PixelHash": "A5A5E295CAA4484CCA49431DFB52CDDA5017F2DF2F47171474B95562C8EDB794"
+        },
+        "ImageSharpOutput": {
+          "Width": 3000,
+          "Height": 4000,
+          "PixelHash": "A5A5E295CAA4484CCA49431DFB52CDDA5017F2DF2F47171474B95562C8EDB794"
+        },
+        "Psnr": 999,
+        "ExactPixels": true,
+        "DimensionsMatch": true
+      },
+      {
+        "Key": "vp8l-resize-12mp-1600",
+        "Suite": "vp8l",
+        "Name": "VP8L resize 4000x3000 to 1600px",
+        "Width": 1600,
+        "Rotate": false,
+        "Workload": "Resize",
+        "OutputCodec": "Png",
+        "Tiesky": {
+          "Engine": "tiesky",
+          "MedianMilliseconds": 53.9019,
+          "DecodeMilliseconds": 0,
+          "TransformMilliseconds": 53.9019,
+          "EncodeMilliseconds": 0,
+          "PeakPrivateBytes": 86704128,
+          "OutputBytes": 1529962
+        },
+        "ImageSharp": {
+          "Engine": "imagesharp",
+          "MedianMilliseconds": 59.2114,
+          "DecodeMilliseconds": 0,
+          "TransformMilliseconds": 59.2114,
+          "EncodeMilliseconds": 0,
+          "PeakPrivateBytes": 88174592,
+          "OutputBytes": 1827162
+        },
+        "OpenOutput": {
+          "Width": 1600,
+          "Height": 1200,
+          "PixelHash": "F139F56C046AE2E19460F6712DE158CF4FC0B20EF24E9DDD9B5D867C75269D2F"
+        },
+        "ImageSharpOutput": {
+          "Width": 1600,
+          "Height": 1200,
+          "PixelHash": "6E1000CAC2A490E184BD626AE8B18B84EBF856928FA56FF4B05BBA7B72B4EE5E"
+        },
+        "Psnr": 55.07740935878221,
+        "ExactPixels": false,
+        "DimensionsMatch": true
+      },
+      {
+        "Key": "vp8l-output-encode-12mp-png-l6",
+        "Suite": "vp8l",
+        "Name": "VP8L decoded output to PNG 4000x3000 L6",
+        "Width": 4000,
+        "Rotate": false,
+        "Workload": "EncodeDecoded",
+        "OutputCodec": "Png",
+        "Tiesky": {
+          "Engine": "tiesky",
+          "MedianMilliseconds": 127.7699,
+          "DecodeMilliseconds": 0,
+          "TransformMilliseconds": 0,
+          "EncodeMilliseconds": 127.3936,
+          "PeakPrivateBytes": 61935616,
+          "OutputBytes": 1985083
+        },
+        "ImageSharp": {
+          "Engine": "imagesharp",
+          "MedianMilliseconds": 510.214,
+          "DecodeMilliseconds": 0,
+          "TransformMilliseconds": 0,
+          "EncodeMilliseconds": 509.9935,
+          "PeakPrivateBytes": 94498816,
+          "OutputBytes": 2151617
+        },
+        "OpenOutput": {
+          "Width": 4000,
+          "Height": 3000,
+          "PixelHash": "74C76EB6C983CF41CC55EB6A3421281BFAE7E13C315C13B450F6721E5FA2896D"
+        },
+        "ImageSharpOutput": {
+          "Width": 4000,
+          "Height": 3000,
+          "PixelHash": "74C76EB6C983CF41CC55EB6A3421281BFAE7E13C315C13B450F6721E5FA2896D"
+        },
+        "Psnr": 999,
+        "ExactPixels": true,
+        "DimensionsMatch": true
+      },
+      {
+        "Key": "vp8l-200-r0",
+        "Suite": "vp8l",
+        "Name": "VP8L to PNG 200px R0",
+        "Width": 200,
+        "Rotate": false,
+        "Workload": "Transform",
+        "OutputCodec": "Png",
+        "Tiesky": {
+          "Engine": "tiesky",
+          "MedianMilliseconds": 161.2672,
+          "DecodeMilliseconds": 117.5708,
+          "TransformMilliseconds": 41.3333,
+          "EncodeMilliseconds": 0.8068,
+          "PeakPrivateBytes": 100794368,
+          "OutputBytes": 4880
+        },
+        "ImageSharp": {
+          "Engine": "imagesharp",
+          "MedianMilliseconds": 183.6579,
+          "DecodeMilliseconds": 150.5709,
+          "TransformMilliseconds": 30.908,
+          "EncodeMilliseconds": 1.541,
+          "PeakPrivateBytes": 165339136,
+          "OutputBytes": 5020
+        },
+        "OpenOutput": {
+          "Width": 200,
+          "Height": 150,
+          "PixelHash": "C914A986C201A2407D5464DCDF94DC936DD47EBE0AC2CD553D0468F08CFE4C7B"
+        },
+        "ImageSharpOutput": {
+          "Width": 200,
+          "Height": 150,
+          "PixelHash": "00B8B73CAFEC9A2966C1AF0EB3CE94CC8415C93EC33B28BA913730B9F1505004"
+        },
+        "Psnr": 52.526688812271665,
+        "ExactPixels": false,
+        "DimensionsMatch": true
+      },
+      {
+        "Key": "vp8l-200-r90",
+        "Suite": "vp8l",
+        "Name": "VP8L to PNG 200px R90",
+        "Width": 200,
+        "Rotate": true,
+        "Workload": "Transform",
+        "OutputCodec": "Png",
+        "Tiesky": {
+          "Engine": "tiesky",
+          "MedianMilliseconds": 175.7706,
+          "DecodeMilliseconds": 112.3629,
+          "TransformMilliseconds": 58.4593,
+          "EncodeMilliseconds": 0.8088,
+          "PeakPrivateBytes": 101007360,
+          "OutputBytes": 3701
+        },
+        "ImageSharp": {
+          "Engine": "imagesharp",
+          "MedianMilliseconds": 216.1676,
+          "DecodeMilliseconds": 147.9989,
+          "TransformMilliseconds": 68.1698,
+          "EncodeMilliseconds": 1.7871,
+          "PeakPrivateBytes": 216203264,
+          "OutputBytes": 6071
+        },
+        "OpenOutput": {
+          "Width": 150,
+          "Height": 200,
+          "PixelHash": "4A593B10F5AF4EFD92E69DCE5CEE94A4ECB5BD9D5DFB654BC277D28256B2836C"
+        },
+        "ImageSharpOutput": {
+          "Width": 150,
+          "Height": 200,
+          "PixelHash": "B9AEE74BECF22B7C7CFD91408A7B986CFB3C9876F36931506493E86BDA6A7908"
+        },
+        "Psnr": 52.526688812271665,
+        "ExactPixels": false,
+        "DimensionsMatch": true
+      },
+      {
+        "Key": "vp8l-800-r0",
+        "Suite": "vp8l",
+        "Name": "VP8L to PNG 800px R0",
+        "Width": 800,
+        "Rotate": false,
+        "Workload": "Transform",
+        "OutputCodec": "Png",
+        "Tiesky": {
+          "Engine": "tiesky",
+          "MedianMilliseconds": 181.9444,
+          "DecodeMilliseconds": 113.2102,
+          "TransformMilliseconds": 45.533,
+          "EncodeMilliseconds": 21.0766,
+          "PeakPrivateBytes": 101429248,
+          "OutputBytes": 414520
+        },
+        "ImageSharp": {
+          "Engine": "imagesharp",
+          "MedianMilliseconds": 238.3618,
+          "DecodeMilliseconds": 147.1213,
+          "TransformMilliseconds": 44.4622,
+          "EncodeMilliseconds": 46.0963,
+          "PeakPrivateBytes": 172023808,
+          "OutputBytes": 483623
+        },
+        "OpenOutput": {
+          "Width": 800,
+          "Height": 600,
+          "PixelHash": "E677CA621253CBAE0FFEC4DF6DF58167B031B3EBE5220AC855BBAF416933C27A"
+        },
+        "ImageSharpOutput": {
+          "Width": 800,
+          "Height": 600,
+          "PixelHash": "697BEB8161532AAD50EFEC402969548BC18BDF7C7174B2E6EAC2D9474B512470"
+        },
+        "Psnr": 56.448673767599836,
+        "ExactPixels": false,
+        "DimensionsMatch": true
+      },
+      {
+        "Key": "vp8l-800-r90",
+        "Suite": "vp8l",
+        "Name": "VP8L to PNG 800px R90",
+        "Width": 800,
+        "Rotate": true,
+        "Workload": "Transform",
+        "OutputCodec": "Png",
+        "Tiesky": {
+          "Engine": "tiesky",
+          "MedianMilliseconds": 205.8187,
+          "DecodeMilliseconds": 109.7684,
+          "TransformMilliseconds": 64.4651,
+          "EncodeMilliseconds": 29.7918,
+          "PeakPrivateBytes": 103632896,
+          "OutputBytes": 566342
+        },
+        "ImageSharp": {
+          "Engine": "imagesharp",
+          "MedianMilliseconds": 274.7166,
+          "DecodeMilliseconds": 142.4862,
+          "TransformMilliseconds": 72.6426,
+          "EncodeMilliseconds": 59.9195,
+          "PeakPrivateBytes": 223891456,
+          "OutputBytes": 657411
+        },
+        "OpenOutput": {
+          "Width": 600,
+          "Height": 800,
+          "PixelHash": "6994F7D36B4B558E3D0D1E08C3D61AB314523637B271EDC89BB022CE15A526BF"
+        },
+        "ImageSharpOutput": {
+          "Width": 600,
+          "Height": 800,
+          "PixelHash": "ACCEA71D57C61D52FF5FD5FF5921ADE89B336B7B9218A01E71FEA220426BE731"
+        },
+        "Psnr": 56.448673767599836,
+        "ExactPixels": false,
+        "DimensionsMatch": true
+      },
+      {
+        "Key": "vp8l-1600-r0",
+        "Suite": "vp8l",
+        "Name": "VP8L to PNG 1600px R0",
+        "Width": 1600,
+        "Rotate": false,
+        "Workload": "Transform",
+        "OutputCodec": "Png",
+        "Tiesky": {
+          "Engine": "tiesky",
+          "MedianMilliseconds": 232.5943,
+          "DecodeMilliseconds": 109.3563,
+          "TransformMilliseconds": 56.5548,
+          "EncodeMilliseconds": 63.6849,
+          "PeakPrivateBytes": 112001024,
+          "OutputBytes": 1529962
+        },
+        "ImageSharp": {
+          "Engine": "imagesharp",
+          "MedianMilliseconds": 368.5468,
+          "DecodeMilliseconds": 140.4456,
+          "TransformMilliseconds": 60.6264,
+          "EncodeMilliseconds": 164.8482,
+          "PeakPrivateBytes": 188018688,
+          "OutputBytes": 1827162
+        },
+        "OpenOutput": {
+          "Width": 1600,
+          "Height": 1200,
+          "PixelHash": "F139F56C046AE2E19460F6712DE158CF4FC0B20EF24E9DDD9B5D867C75269D2F"
+        },
+        "ImageSharpOutput": {
+          "Width": 1600,
+          "Height": 1200,
+          "PixelHash": "6E1000CAC2A490E184BD626AE8B18B84EBF856928FA56FF4B05BBA7B72B4EE5E"
+        },
+        "Psnr": 55.07740935878221,
+        "ExactPixels": false,
+        "DimensionsMatch": true
+      },
+      {
+        "Key": "vp8l-1600-r90",
+        "Suite": "vp8l",
+        "Name": "VP8L to PNG 1600px R90",
+        "Width": 1600,
+        "Rotate": true,
+        "Workload": "Transform",
+        "OutputCodec": "Png",
+        "Tiesky": {
+          "Engine": "tiesky",
+          "MedianMilliseconds": 283.9099,
+          "DecodeMilliseconds": 112.533,
+          "TransformMilliseconds": 78.0065,
+          "EncodeMilliseconds": 89.4713,
+          "PeakPrivateBytes": 117198848,
+          "OutputBytes": 2161309
+        },
+        "ImageSharp": {
+          "Engine": "imagesharp",
+          "MedianMilliseconds": 443.0995,
+          "DecodeMilliseconds": 143.296,
+          "TransformMilliseconds": 91.1558,
+          "EncodeMilliseconds": 206.8226,
+          "PeakPrivateBytes": 242798592,
+          "OutputBytes": 2548724
+        },
+        "OpenOutput": {
+          "Width": 1200,
+          "Height": 1600,
+          "PixelHash": "F1EC06808B560F0F5F3665DF27BA7AB3B0EF4AF3283208D3C266AD83B570C121"
+        },
+        "ImageSharpOutput": {
+          "Width": 1200,
+          "Height": 1600,
+          "PixelHash": "F6C09E708C5F38AFCD08139F3AA46578E8870C81A4C3CC2114A23231E228235E"
+        },
+        "Psnr": 55.07740935878221,
+        "ExactPixels": false,
+        "DimensionsMatch": true
+      },
+      {
+        "Key": "vp8-decode-12mp",
+        "Suite": "vp8",
+        "Name": "VP8 decode 4000x3000",
+        "Width": 4000,
+        "Rotate": false,
+        "Workload": "Decode",
+        "OutputCodec": "Png",
+        "Tiesky": {
+          "Engine": "tiesky",
+          "MedianMilliseconds": 384.4924,
+          "DecodeMilliseconds": 384.4924,
+          "TransformMilliseconds": 0,
+          "EncodeMilliseconds": 0,
+          "PeakPrivateBytes": 127328256,
+          "OutputBytes": 5437235
+        },
+        "ImageSharp": {
+          "Engine": "imagesharp",
+          "MedianMilliseconds": 474.4174,
+          "DecodeMilliseconds": 474.4174,
+          "TransformMilliseconds": 0,
+          "EncodeMilliseconds": 0,
+          "PeakPrivateBytes": 178872320,
+          "OutputBytes": 6482822
+        },
+        "OpenOutput": {
+          "Width": 4000,
+          "Height": 3000,
+          "PixelHash": "C892A2ABCC33F6A5075E390040CD40023CE686FF68003C3B87ED249DF99CC99D"
+        },
+        "ImageSharpOutput": {
+          "Width": 4000,
+          "Height": 3000,
+          "PixelHash": "2A374596DC240B2E0E9B021E312B7AB34DF73C664735C1659EC6FE766D99BFD5"
+        },
+        "Psnr": 25.521605973933003,
+        "ExactPixels": false,
+        "DimensionsMatch": true
+      },
+      {
+        "Key": "vp8-rotate-12mp-r90",
+        "Suite": "vp8",
+        "Name": "VP8 rotate 4000x3000 R90",
+        "Width": 4000,
+        "Rotate": true,
+        "Workload": "Rotate",
+        "OutputCodec": "Png",
+        "Tiesky": {
+          "Engine": "tiesky",
+          "MedianMilliseconds": 13.7476,
+          "DecodeMilliseconds": 0,
+          "TransformMilliseconds": 13.7476,
+          "EncodeMilliseconds": 0,
+          "PeakPrivateBytes": 179974144,
+          "OutputBytes": 8249207
+        },
+        "ImageSharp": {
+          "Engine": "imagesharp",
+          "MedianMilliseconds": 31.3403,
+          "DecodeMilliseconds": 0,
+          "TransformMilliseconds": 31.3403,
+          "EncodeMilliseconds": 0,
+          "PeakPrivateBytes": 279519232,
+          "OutputBytes": 9805484
+        },
+        "OpenOutput": {
+          "Width": 3000,
+          "Height": 4000,
+          "PixelHash": "3EBAAF51D48C0784C8EA565861E76068259214A8AC3CFC39A213007535341D8E"
+        },
+        "ImageSharpOutput": {
+          "Width": 3000,
+          "Height": 4000,
+          "PixelHash": "E3D65375D18B5B6808936281F527FFFAFEDAB20E9720D459A3352A4FE90C035A"
+        },
+        "Psnr": 25.521605973933003,
+        "ExactPixels": false,
+        "DimensionsMatch": true
+      },
+      {
+        "Key": "vp8-resize-12mp-1600",
+        "Suite": "vp8",
+        "Name": "VP8 resize 4000x3000 to 1600px",
+        "Width": 1600,
+        "Rotate": false,
+        "Workload": "Resize",
+        "OutputCodec": "Png",
+        "Tiesky": {
+          "Engine": "tiesky",
+          "MedianMilliseconds": 54.4336,
+          "DecodeMilliseconds": 0,
+          "TransformMilliseconds": 54.4336,
+          "EncodeMilliseconds": 0,
+          "PeakPrivateBytes": 97947648,
+          "OutputBytes": 2914143
+        },
+        "ImageSharp": {
+          "Engine": "imagesharp",
+          "MedianMilliseconds": 59.3517,
+          "DecodeMilliseconds": 0,
+          "TransformMilliseconds": 59.3517,
+          "EncodeMilliseconds": 0,
+          "PeakPrivateBytes": 112119808,
+          "OutputBytes": 3334817
+        },
+        "OpenOutput": {
+          "Width": 1600,
+          "Height": 1200,
+          "PixelHash": "A2C69F8CB573A88B908F8C345838B29052C0AB6DDA2B1DCF73B97980FEB9A348"
+        },
+        "ImageSharpOutput": {
+          "Width": 1600,
+          "Height": 1200,
+          "PixelHash": "27B8886CB9B3B94E4F5841E3B8DD5D21A505F5985435C822C9CEBF538D80C746"
+        },
+        "Psnr": 36.28411284018053,
+        "ExactPixels": false,
+        "DimensionsMatch": true
+      },
+      {
+        "Key": "vp8-output-encode-12mp-jpeg-q85",
+        "Suite": "vp8",
+        "Name": "VP8 decoded output to JPEG 4000x3000 Q85",
+        "Width": 4000,
+        "Rotate": false,
+        "Workload": "EncodeDecoded",
+        "OutputCodec": "Jpeg",
+        "Tiesky": {
+          "Engine": "tiesky",
+          "MedianMilliseconds": 117.2507,
+          "DecodeMilliseconds": 0,
+          "TransformMilliseconds": 0,
+          "EncodeMilliseconds": 116.1364,
+          "PeakPrivateBytes": 114532352,
+          "OutputBytes": 6324025
+        },
+        "ImageSharp": {
+          "Engine": "imagesharp",
+          "MedianMilliseconds": 133.3452,
+          "DecodeMilliseconds": 0,
+          "TransformMilliseconds": 0,
+          "EncodeMilliseconds": 132.3853,
+          "PeakPrivateBytes": 109137920,
+          "OutputBytes": 5840699
+        },
+        "OpenOutput": {
+          "Width": 4000,
+          "Height": 3000,
+          "PixelHash": "4D3C3E3C9DAB948E3444F5542A76F71DF76CFA6144BA609717B870F42F4747B5"
+        },
+        "ImageSharpOutput": {
+          "Width": 4000,
+          "Height": 3000,
+          "PixelHash": "CF4D35A031A77497ABC1D44800B55A9EECB3721E4E78C3505108DB1E0553626B"
+        },
+        "Psnr": 23.20222459201435,
+        "ExactPixels": false,
+        "DimensionsMatch": true
+      },
+      {
+        "Key": "vp8-200-r0",
+        "Suite": "vp8",
+        "Name": "VP8 to JPEG 200px R0",
+        "Width": 200,
+        "Rotate": false,
+        "Workload": "Transform",
+        "OutputCodec": "Jpeg",
+        "Tiesky": {
+          "Engine": "tiesky",
+          "MedianMilliseconds": 421.7736,
+          "DecodeMilliseconds": 383.8986,
+          "TransformMilliseconds": 35.1701,
+          "EncodeMilliseconds": 0.8298,
+          "PeakPrivateBytes": 88662016,
+          "OutputBytes": 3280
+        },
+        "ImageSharp": {
+          "Engine": "imagesharp",
+          "MedianMilliseconds": 508.283,
+          "DecodeMilliseconds": 478.3805,
+          "TransformMilliseconds": 30.069,
+          "EncodeMilliseconds": 0.2612,
+          "PeakPrivateBytes": 127467520,
+          "OutputBytes": 3201
+        },
+        "OpenOutput": {
+          "Width": 200,
+          "Height": 150,
+          "PixelHash": "948573B48D02457AFDB4F52DDFB10CFF382AE547937C374EC6D42EDE9C6B08D2"
+        },
+        "ImageSharpOutput": {
+          "Width": 200,
+          "Height": 150,
+          "PixelHash": "B1B87B795795E32A0AAE1E9184612A48CD65DA0E3E38DB43C3171B0D1EC8F526"
+        },
+        "Psnr": 45.62741694729664,
+        "ExactPixels": false,
+        "DimensionsMatch": true
+      },
+      {
+        "Key": "vp8-200-r90",
+        "Suite": "vp8",
+        "Name": "VP8 to JPEG 200px R90",
+        "Width": 200,
+        "Rotate": true,
+        "Workload": "Transform",
+        "OutputCodec": "Jpeg",
+        "Tiesky": {
+          "Engine": "tiesky",
+          "MedianMilliseconds": 447.5935,
+          "DecodeMilliseconds": 386.9709,
+          "TransformMilliseconds": 58.1073,
+          "EncodeMilliseconds": 0.8308,
+          "PeakPrivateBytes": 89088000,
+          "OutputBytes": 4151
+        },
+        "ImageSharp": {
+          "Engine": "imagesharp",
+          "MedianMilliseconds": 535.5783,
+          "DecodeMilliseconds": 470.5349,
+          "TransformMilliseconds": 60.579,
+          "EncodeMilliseconds": 0.2631,
+          "PeakPrivateBytes": 178991104,
+          "OutputBytes": 4163
+        },
+        "OpenOutput": {
+          "Width": 150,
+          "Height": 200,
+          "PixelHash": "6C46A72B6F6E9F1F3D75D6DC0E03C65D2F08FD967A0B4E1416154296816C3177"
+        },
+        "ImageSharpOutput": {
+          "Width": 150,
+          "Height": 200,
+          "PixelHash": "8DAAE7CB6B37DE7012A058A6E9D3D122A1C88BA59994C0C75E720691CDB33AD0"
+        },
+        "Psnr": 45.24696976468135,
+        "ExactPixels": false,
+        "DimensionsMatch": true
+      },
+      {
+        "Key": "vp8-800-r0",
+        "Suite": "vp8",
+        "Name": "VP8 to JPEG 800px R0",
+        "Width": 800,
+        "Rotate": false,
+        "Workload": "Transform",
+        "OutputCodec": "Jpeg",
+        "Tiesky": {
+          "Engine": "tiesky",
+          "MedianMilliseconds": 441.3151,
+          "DecodeMilliseconds": 378.9241,
+          "TransformMilliseconds": 44.2639,
+          "EncodeMilliseconds": 14.8643,
+          "PeakPrivateBytes": 94126080,
+          "OutputBytes": 296175
+        },
+        "ImageSharp": {
+          "Engine": "imagesharp",
+          "MedianMilliseconds": 527.1534,
+          "DecodeMilliseconds": 476.579,
+          "TransformMilliseconds": 43.834,
+          "EncodeMilliseconds": 6.1338,
+          "PeakPrivateBytes": 133197824,
+          "OutputBytes": 295179
+        },
+        "OpenOutput": {
+          "Width": 800,
+          "Height": 600,
+          "PixelHash": "FA5D7FBFED498ED83E468453C32177930E14C57CC5488B6C1D609D918159F60E"
+        },
+        "ImageSharpOutput": {
+          "Width": 800,
+          "Height": 600,
+          "PixelHash": "94E52730F0D0D5521A3954364D74B46C35373B11F8EC153B692926286D6BE910"
+        },
+        "Psnr": 34.24490529677657,
+        "ExactPixels": false,
+        "DimensionsMatch": true
+      },
+      {
+        "Key": "vp8-800-r90",
+        "Suite": "vp8",
+        "Name": "VP8 to JPEG 800px R90",
+        "Width": 800,
+        "Rotate": true,
+        "Workload": "Transform",
+        "OutputCodec": "Jpeg",
+        "Tiesky": {
+          "Engine": "tiesky",
+          "MedianMilliseconds": 459.1015,
+          "DecodeMilliseconds": 378.7262,
+          "TransformMilliseconds": 61.9854,
+          "EncodeMilliseconds": 15.2185,
+          "PeakPrivateBytes": 94384128,
+          "OutputBytes": 297010
+        },
+        "ImageSharp": {
+          "Engine": "imagesharp",
+          "MedianMilliseconds": 552.6363,
+          "DecodeMilliseconds": 472.6403,
+          "TransformMilliseconds": 73.2996,
+          "EncodeMilliseconds": 6.0682,
+          "PeakPrivateBytes": 181669888,
+          "OutputBytes": 296063
+        },
+        "OpenOutput": {
+          "Width": 600,
+          "Height": 800,
+          "PixelHash": "E68F4B4168019A5211A7FB43260A53590773755CFF42CD771992D89B91834681"
+        },
+        "ImageSharpOutput": {
+          "Width": 600,
+          "Height": 800,
+          "PixelHash": "2BE624A4DAE62BCFBE5C3D741A302FE111E7C83082BD3A88CDCB347DF26763DF"
+        },
+        "Psnr": 34.672524762219226,
+        "ExactPixels": false,
+        "DimensionsMatch": true
+      },
+      {
+        "Key": "vp8-1600-r0",
+        "Suite": "vp8",
+        "Name": "VP8 to JPEG 1600px R0",
+        "Width": 1600,
+        "Rotate": false,
+        "Workload": "Transform",
+        "OutputCodec": "Jpeg",
+        "Tiesky": {
+          "Engine": "tiesky",
+          "MedianMilliseconds": 463.9524,
+          "DecodeMilliseconds": 381.9115,
+          "TransformMilliseconds": 57.5957,
+          "EncodeMilliseconds": 20.5322,
+          "PeakPrivateBytes": 105656320,
+          "OutputBytes": 1211951
+        },
+        "ImageSharp": {
+          "Engine": "imagesharp",
+          "MedianMilliseconds": 554.6713,
+          "DecodeMilliseconds": 470.4645,
+          "TransformMilliseconds": 60.3177,
+          "EncodeMilliseconds": 23.4813,
+          "PeakPrivateBytes": 142286848,
+          "OutputBytes": 1202259
+        },
+        "OpenOutput": {
+          "Width": 1600,
+          "Height": 1200,
+          "PixelHash": "23349E80DB2A8E30CA21700EEC8DEE7B5113B3DE96B0577E2321DF1C4862064E"
+        },
+        "ImageSharpOutput": {
+          "Width": 1600,
+          "Height": 1200,
+          "PixelHash": "37D3D56B12B9D9F5A3415AF1EAFE2EFB61596B36A1DEE517E3609C755AC26BB3"
+        },
+        "Psnr": 30.47360341703095,
+        "ExactPixels": false,
+        "DimensionsMatch": true
+      },
+      {
+        "Key": "vp8-1600-r90",
+        "Suite": "vp8",
+        "Name": "VP8 to JPEG 1600px R90",
+        "Width": 1600,
+        "Rotate": true,
+        "Workload": "Transform",
+        "OutputCodec": "Jpeg",
+        "Tiesky": {
+          "Engine": "tiesky",
+          "MedianMilliseconds": 480.7308,
+          "DecodeMilliseconds": 377.9914,
+          "TransformMilliseconds": 80.2899,
+          "EncodeMilliseconds": 20.2203,
+          "PeakPrivateBytes": 104976384,
+          "OutputBytes": 1212856
+        },
+        "ImageSharp": {
+          "Engine": "imagesharp",
+          "MedianMilliseconds": 579.2692,
+          "DecodeMilliseconds": 466.6441,
+          "TransformMilliseconds": 88.8182,
+          "EncodeMilliseconds": 23.9417,
+          "PeakPrivateBytes": 185995264,
+          "OutputBytes": 1203431
+        },
+        "OpenOutput": {
+          "Width": 1200,
+          "Height": 1600,
+          "PixelHash": "65384140B5194924444BD0B59B80408E67E770A483E106AD18B673628F33CB15"
+        },
+        "ImageSharpOutput": {
+          "Width": 1200,
+          "Height": 1600,
+          "PixelHash": "29116A94FF4435BF03FEE5D3C45C723CF1DE24E5EAB663CAA3E17E69E450CC75"
+        },
+        "Psnr": 30.47749068519415,
+        "ExactPixels": false,
+        "DimensionsMatch": true
+      },
+      {
+        "Key": "encode-png-l6",
+        "Suite": "encoders",
+        "Name": "PNG encoder 1600x1200 L6",
+        "Width": 1600,
+        "Rotate": false,
+        "Workload": "Encode",
+        "OutputCodec": "Png",
+        "Tiesky": {
+          "Engine": "tiesky",
+          "MedianMilliseconds": 89.1278,
+          "DecodeMilliseconds": 0,
+          "TransformMilliseconds": 0,
+          "EncodeMilliseconds": 88.9865,
+          "PeakPrivateBytes": 35180544,
+          "OutputBytes": 1493343
+        },
+        "ImageSharp": {
+          "Engine": "imagesharp",
+          "MedianMilliseconds": 175.0385,
+          "DecodeMilliseconds": 0,
+          "TransformMilliseconds": 0,
+          "EncodeMilliseconds": 174.9769,
+          "PeakPrivateBytes": 45887488,
+          "OutputBytes": 1777385
+        },
+        "OpenOutput": {
+          "Width": 1600,
+          "Height": 1200,
+          "PixelHash": "8DB2EA92F8B106582F0933BCF50CB2AF2949B59E5F020C401326F28F3AA88E9B"
+        },
+        "ImageSharpOutput": {
+          "Width": 1600,
+          "Height": 1200,
+          "PixelHash": "8DB2EA92F8B106582F0933BCF50CB2AF2949B59E5F020C401326F28F3AA88E9B"
+        },
+        "Psnr": 999,
+        "ExactPixels": true,
+        "DimensionsMatch": true
+      },
+      {
+        "Key": "encode-jpeg-q85",
+        "Suite": "encoders",
+        "Name": "JPEG encoder 1600x1200 Q85",
+        "Width": 1600,
+        "Rotate": false,
+        "Workload": "Encode",
+        "OutputCodec": "Jpeg",
+        "Tiesky": {
+          "Engine": "tiesky",
+          "MedianMilliseconds": 24.1212,
+          "DecodeMilliseconds": 0,
+          "TransformMilliseconds": 0,
+          "EncodeMilliseconds": 24.0281,
+          "PeakPrivateBytes": 38109184,
+          "OutputBytes": 1183541
+        },
+        "ImageSharp": {
+          "Engine": "imagesharp",
+          "MedianMilliseconds": 24.2304,
+          "DecodeMilliseconds": 0,
+          "TransformMilliseconds": 0,
+          "EncodeMilliseconds": 23.8511,
+          "PeakPrivateBytes": 35135488,
+          "OutputBytes": 1181926
+        },
+        "OpenOutput": {
+          "Width": 1600,
+          "Height": 1200,
+          "PixelHash": "9255F92263B37026FA74440C509E8F800184E91E204B111D9A70F3D2A8CE9611"
+        },
+        "ImageSharpOutput": {
+          "Width": 1600,
+          "Height": 1200,
+          "PixelHash": "FFA692A2B4916D749481DF1DAA2396E1403CB7B126BE83E3A614D7B1CE519354"
+        },
+        "Psnr": 37.335349113438774,
+        "ExactPixels": false,
+        "DimensionsMatch": true
+      }
+    ]
+  },
+  "Baseline": {
+    "GeneratedUtc": "2026-08-30T10:47:32.9740215+00:00",
+    "Iterations": 15,
+    "Warmups": 5,
+    "Environment": {
+      "OperatingSystem": "Microsoft Windows 10.0.26200",
+      "Framework": ".NET 8.0.30",
+      "Architecture": "X64",
+      "ProcessorCount": 12,
+      "Processor": "Intel64 Family 6 Model 158 Stepping 10, GenuineIntel",
+      "ServerGc": false,
+      "TieskyAssembly": "Tiesky.Image2D 1.0.0.0",
+      "ImageSharpAssembly": "SixLabors.ImageSharp 3.1.12 (assembly 3.0.0.0)"
+    },
+    "Scenarios": [
+      {
+        "Key": "jpeg-200-r0",
+        "Suite": "jpeg",
+        "Name": "JPEG to JPEG 200px R0",
+        "Width": 200,
+        "Rotate": false,
+        "Workload": "Transform",
+        "OutputCodec": "Jpeg",
+        "Tiesky": {
+          "Engine": "tiesky",
+          "MedianMilliseconds": 118.5367,
+          "DecodeMilliseconds": 112.0825,
+          "TransformMilliseconds": 4.731,
+          "EncodeMilliseconds": 0.6999,
+          "PeakPrivateBytes": 42455040,
+          "OutputBytes": 2985
+        },
+        "ImageSharp": {
+          "Engine": "imagesharp",
+          "MedianMilliseconds": 157.5973,
+          "DecodeMilliseconds": 129.7189,
+          "TransformMilliseconds": 27.5504,
+          "EncodeMilliseconds": 0.2302,
+          "PeakPrivateBytes": 60882944,
+          "OutputBytes": 3194
+        },
+        "OpenOutput": {
+          "Width": 200,
+          "Height": 150,
+          "PixelHash": "4B907689BDDC3C1B2538D5515A07912E7252935ECB14ED95FC8C94C71D94A8B9"
+        },
+        "ImageSharpOutput": {
+          "Width": 200,
+          "Height": 150,
+          "PixelHash": "CBFD193BDBE2573839365C8A162971AD78749AD25BED7A6B5E5E6BC407006930"
+        },
+        "Psnr": 38.325497894046435,
+        "ExactPixels": false,
+        "DimensionsMatch": true
+      },
+      {
+        "Key": "jpeg-200-r90",
+        "Suite": "jpeg",
+        "Name": "JPEG to JPEG 200px R90",
+        "Width": 200,
+        "Rotate": true,
+        "Workload": "Transform",
+        "OutputCodec": "Jpeg",
+        "Tiesky": {
+          "Engine": "tiesky",
+          "MedianMilliseconds": 121.1777,
+          "DecodeMilliseconds": 114.9677,
+          "TransformMilliseconds": 5.2249,
+          "EncodeMilliseconds": 0.6968,
+          "PeakPrivateBytes": 42409984,
+          "OutputBytes": 4081
+        },
+        "ImageSharp": {
+          "Engine": "imagesharp",
+          "MedianMilliseconds": 175.0954,
+          "DecodeMilliseconds": 118.776,
+          "TransformMilliseconds": 55.9831,
+          "EncodeMilliseconds": 0.2411,
+          "PeakPrivateBytes": 100126720,
+          "OutputBytes": 4263
+        },
+        "OpenOutput": {
+          "Width": 150,
+          "Height": 200,
+          "PixelHash": "3355A7258E66695CD71B5CD12DFA584660741A0F73D4A0E14C6C0FC981E34C9B"
+        },
+        "ImageSharpOutput": {
+          "Width": 150,
+          "Height": 200,
+          "PixelHash": "EA25D62E4FB74A77AC7D6A4C143F3EB500670BA8A9E6132D3302EA6FEEFF86B2"
+        },
+        "Psnr": 39.58789841913135,
+        "ExactPixels": false,
+        "DimensionsMatch": true
+      },
+      {
+        "Key": "jpeg-800-r0",
+        "Suite": "jpeg",
+        "Name": "JPEG to JPEG 800px R0",
+        "Width": 800,
+        "Rotate": false,
+        "Workload": "Transform",
+        "OutputCodec": "Jpeg",
+        "Tiesky": {
+          "Engine": "tiesky",
+          "MedianMilliseconds": 154.1992,
+          "DecodeMilliseconds": 129.5616,
+          "TransformMilliseconds": 5.9792,
+          "EncodeMilliseconds": 17.9198,
+          "PeakPrivateBytes": 50589696,
+          "OutputBytes": 267028
+        },
+        "ImageSharp": {
+          "Engine": "imagesharp",
+          "MedianMilliseconds": 169.1077,
+          "DecodeMilliseconds": 118.8449,
+          "TransformMilliseconds": 44.2052,
+          "EncodeMilliseconds": 6.0171,
+          "PeakPrivateBytes": 67796992,
+          "OutputBytes": 296144
+        },
+        "OpenOutput": {
+          "Width": 800,
+          "Height": 600,
+          "PixelHash": "CD71B1C011F84BCE99D588CB4A975A9486C9F4D7B1FCBA7D9189E34F1792C24D"
+        },
+        "ImageSharpOutput": {
+          "Width": 800,
+          "Height": 600,
+          "PixelHash": "125E1B7E43307CF08BB333E44CD346D1A48721F468354BF583CC57C217762856"
+        },
+        "Psnr": 20.70263156808146,
+        "ExactPixels": false,
+        "DimensionsMatch": true
+      },
+      {
+        "Key": "jpeg-800-r90",
+        "Suite": "jpeg",
+        "Name": "JPEG to JPEG 800px R90",
+        "Width": 800,
+        "Rotate": true,
+        "Workload": "Transform",
+        "OutputCodec": "Jpeg",
+        "Tiesky": {
+          "Engine": "tiesky",
+          "MedianMilliseconds": 153.3971,
+          "DecodeMilliseconds": 127.7956,
+          "TransformMilliseconds": 6.8691,
+          "EncodeMilliseconds": 18.1272,
+          "PeakPrivateBytes": 50999296,
+          "OutputBytes": 266685
+        },
+        "ImageSharp": {
+          "Engine": "imagesharp",
+          "MedianMilliseconds": 198.4353,
+          "DecodeMilliseconds": 119.2439,
+          "TransformMilliseconds": 73.2355,
+          "EncodeMilliseconds": 5.9176,
+          "PeakPrivateBytes": 102694912,
+          "OutputBytes": 297263
+        },
+        "OpenOutput": {
+          "Width": 600,
+          "Height": 800,
+          "PixelHash": "6DA5065CDA7BADDCF0ADCC974812DC360A41A0531DBC09DA3634E13B0E13F991"
+        },
+        "ImageSharpOutput": {
+          "Width": 600,
+          "Height": 800,
+          "PixelHash": "C35923421C5E0D8612E26FD1F0718EA6546FCAB098E576A450D477D7AC0ABF16"
+        },
+        "Psnr": 20.87895014580582,
+        "ExactPixels": false,
+        "DimensionsMatch": true
+      },
+      {
+        "Key": "jpeg-1600-r0",
+        "Suite": "jpeg",
+        "Name": "JPEG to JPEG 1600px R0",
+        "Width": 1600,
+        "Rotate": false,
+        "Workload": "Transform",
+        "OutputCodec": "Jpeg",
+        "Tiesky": {
+          "Engine": "tiesky",
+          "MedianMilliseconds": 301.8971,
+          "DecodeMilliseconds": 206.6941,
+          "TransformMilliseconds": 23.5442,
+          "EncodeMilliseconds": 70.7745,
+          "PeakPrivateBytes": 78221312,
+          "OutputBytes": 1133758
+        },
+        "ImageSharp": {
+          "Engine": "imagesharp",
+          "MedianMilliseconds": 208.3327,
+          "DecodeMilliseconds": 119.0654,
+          "TransformMilliseconds": 64.3003,
+          "EncodeMilliseconds": 24.1588,
+          "PeakPrivateBytes": 81215488,
+          "OutputBytes": 1215438
+        },
+        "OpenOutput": {
+          "Width": 1600,
+          "Height": 1200,
+          "PixelHash": "C302FF2C1BB2BE90E041CBFF24CE04BDDE07E02BD026C6FEF1B2342EB62361FE"
+        },
+        "ImageSharpOutput": {
+          "Width": 1600,
+          "Height": 1200,
+          "PixelHash": "4B09EA14DDEAED691EEEDEBB599DCFD54C61B8F98DE92ABC913442AA7A73B685"
+        },
+        "Psnr": 23.381475762798658,
+        "ExactPixels": false,
+        "DimensionsMatch": true
+      },
+      {
+        "Key": "jpeg-1600-r90",
+        "Suite": "jpeg",
+        "Name": "JPEG to JPEG 1600px R90",
+        "Width": 1600,
+        "Rotate": true,
+        "Workload": "Transform",
+        "OutputCodec": "Jpeg",
+        "Tiesky": {
+          "Engine": "tiesky",
+          "MedianMilliseconds": 308.3404,
+          "DecodeMilliseconds": 207.6744,
+          "TransformMilliseconds": 25.4321,
+          "EncodeMilliseconds": 73.1925,
+          "PeakPrivateBytes": 78979072,
+          "OutputBytes": 1137440
+        },
+        "ImageSharp": {
+          "Engine": "imagesharp",
+          "MedianMilliseconds": 236.8113,
+          "DecodeMilliseconds": 118.7315,
+          "TransformMilliseconds": 93.2371,
+          "EncodeMilliseconds": 24.2047,
+          "PeakPrivateBytes": 112238592,
+          "OutputBytes": 1215528
+        },
+        "OpenOutput": {
+          "Width": 1200,
+          "Height": 1600,
+          "PixelHash": "DF1CE844F061740D7514CDACDF2485ACF129F6AE57C1A73F0CFB422696F5E96F"
+        },
+        "ImageSharpOutput": {
+          "Width": 1200,
+          "Height": 1600,
+          "PixelHash": "FBF64DDF34E3F5C90A1E07BE13709AE5C55A3ADB6BF81359110BD4E836020E96"
+        },
+        "Psnr": 23.403309911832103,
+        "ExactPixels": false,
+        "DimensionsMatch": true
+      },
+      {
+        "Key": "png-decode-12mp",
+        "Suite": "png",
+        "Name": "PNG decode 4000x3000",
+        "Width": 4000,
+        "Rotate": false,
+        "Workload": "Decode",
+        "OutputCodec": "Png",
+        "Tiesky": {
+          "Engine": "tiesky",
+          "MedianMilliseconds": 85.1158,
+          "DecodeMilliseconds": 85.1158,
+          "TransformMilliseconds": 0,
+          "EncodeMilliseconds": 0,
+          "PeakPrivateBytes": 61407232,
+          "OutputBytes": 1985083
+        },
+        "ImageSharp": {
+          "Engine": "imagesharp",
+          "MedianMilliseconds": 120.6309,
+          "DecodeMilliseconds": 120.6309,
+          "TransformMilliseconds": 0,
+          "EncodeMilliseconds": 0,
+          "PeakPrivateBytes": 82624512,
+          "OutputBytes": 1867073
+        },
+        "OpenOutput": {
+          "Width": 4000,
+          "Height": 3000,
+          "PixelHash": "74C76EB6C983CF41CC55EB6A3421281BFAE7E13C315C13B450F6721E5FA2896D"
+        },
+        "ImageSharpOutput": {
+          "Width": 4000,
+          "Height": 3000,
+          "PixelHash": "74C76EB6C983CF41CC55EB6A3421281BFAE7E13C315C13B450F6721E5FA2896D"
+        },
+        "Psnr": 999,
+        "ExactPixels": true,
+        "DimensionsMatch": true
+      },
+      {
+        "Key": "png-rotate-12mp-r90",
+        "Suite": "png",
+        "Name": "PNG rotate 4000x3000 R90",
+        "Width": 4000,
+        "Rotate": true,
+        "Workload": "Rotate",
+        "OutputCodec": "Png",
+        "Tiesky": {
+          "Engine": "tiesky",
+          "MedianMilliseconds": 13.269,
+          "DecodeMilliseconds": 0,
+          "TransformMilliseconds": 13.269,
+          "EncodeMilliseconds": 0,
+          "PeakPrivateBytes": 107118592,
+          "OutputBytes": 2673514
+        },
+        "ImageSharp": {
+          "Engine": "imagesharp",
+          "MedianMilliseconds": 29.135,
+          "DecodeMilliseconds": 0,
+          "TransformMilliseconds": 29.135,
+          "EncodeMilliseconds": 0,
+          "PeakPrivateBytes": 142581760,
+          "OutputBytes": 2559497
+        },
+        "OpenOutput": {
+          "Width": 3000,
+          "Height": 4000,
+          "PixelHash": "A5A5E295CAA4484CCA49431DFB52CDDA5017F2DF2F47171474B95562C8EDB794"
+        },
+        "ImageSharpOutput": {
+          "Width": 3000,
+          "Height": 4000,
+          "PixelHash": "A5A5E295CAA4484CCA49431DFB52CDDA5017F2DF2F47171474B95562C8EDB794"
+        },
+        "Psnr": 999,
+        "ExactPixels": true,
+        "DimensionsMatch": true
+      },
+      {
+        "Key": "png-encode-12mp-l6",
+        "Suite": "png",
+        "Name": "PNG encoder 4000x3000 L6",
+        "Width": 4000,
+        "Rotate": false,
+        "Workload": "EncodeDecoded",
+        "OutputCodec": "Png",
+        "Tiesky": {
+          "Engine": "tiesky",
+          "MedianMilliseconds": 125.8407,
+          "DecodeMilliseconds": 0,
+          "TransformMilliseconds": 0,
+          "EncodeMilliseconds": 125.5962,
+          "PeakPrivateBytes": 61214720,
+          "OutputBytes": 1985083
+        },
+        "ImageSharp": {
+          "Engine": "imagesharp",
+          "MedianMilliseconds": 333.2796,
+          "DecodeMilliseconds": 0,
+          "TransformMilliseconds": 0,
+          "EncodeMilliseconds": 333.0185,
+          "PeakPrivateBytes": 79462400,
+          "OutputBytes": 1867073
+        },
+        "OpenOutput": {
+          "Width": 4000,
+          "Height": 3000,
+          "PixelHash": "74C76EB6C983CF41CC55EB6A3421281BFAE7E13C315C13B450F6721E5FA2896D"
+        },
+        "ImageSharpOutput": {
+          "Width": 4000,
+          "Height": 3000,
+          "PixelHash": "74C76EB6C983CF41CC55EB6A3421281BFAE7E13C315C13B450F6721E5FA2896D"
+        },
+        "Psnr": 999,
+        "ExactPixels": true,
+        "DimensionsMatch": true
+      },
+      {
+        "Key": "png-200-r0",
+        "Suite": "png",
+        "Name": "PNG to PNG 200px R0",
+        "Width": 200,
+        "Rotate": false,
+        "Workload": "Transform",
+        "OutputCodec": "Png",
+        "Tiesky": {
+          "Engine": "tiesky",
+          "MedianMilliseconds": 124.7379,
+          "DecodeMilliseconds": 85.1824,
+          "TransformMilliseconds": 36.8739,
+          "EncodeMilliseconds": 0.8509,
+          "PeakPrivateBytes": 54358016,
+          "OutputBytes": 4880
+        },
+        "ImageSharp": {
+          "Engine": "imagesharp",
+          "MedianMilliseconds": 165.3482,
+          "DecodeMilliseconds": 137.8882,
+          "TransformMilliseconds": 27.011,
+          "EncodeMilliseconds": 0.8943,
+          "PeakPrivateBytes": 54882304,
+          "OutputBytes": 4505
+        },
+        "OpenOutput": {
+          "Width": 200,
+          "Height": 150,
+          "PixelHash": "C914A986C201A2407D5464DCDF94DC936DD47EBE0AC2CD553D0468F08CFE4C7B"
+        },
+        "ImageSharpOutput": {
+          "Width": 200,
+          "Height": 150,
+          "PixelHash": "00B8B73CAFEC9A2966C1AF0EB3CE94CC8415C93EC33B28BA913730B9F1505004"
+        },
+        "Psnr": 52.526688812271665,
+        "ExactPixels": false,
+        "DimensionsMatch": true
+      },
+      {
+        "Key": "png-200-r90",
+        "Suite": "png",
+        "Name": "PNG to PNG 200px R90",
+        "Width": 200,
+        "Rotate": true,
+        "Workload": "Transform",
+        "OutputCodec": "Png",
+        "Tiesky": {
+          "Engine": "tiesky",
+          "MedianMilliseconds": 139.627,
+          "DecodeMilliseconds": 85.1676,
+          "TransformMilliseconds": 51.5592,
+          "EncodeMilliseconds": 0.8835,
+          "PeakPrivateBytes": 55054336,
+          "OutputBytes": 3701
+        },
+        "ImageSharp": {
+          "Engine": "imagesharp",
+          "MedianMilliseconds": 192.1768,
+          "DecodeMilliseconds": 136.1951,
+          "TransformMilliseconds": 55.1318,
+          "EncodeMilliseconds": 0.7855,
+          "PeakPrivateBytes": 93523968,
+          "OutputBytes": 3618
+        },
+        "OpenOutput": {
+          "Width": 150,
+          "Height": 200,
+          "PixelHash": "4A593B10F5AF4EFD92E69DCE5CEE94A4ECB5BD9D5DFB654BC277D28256B2836C"
+        },
+        "ImageSharpOutput": {
+          "Width": 150,
+          "Height": 200,
+          "PixelHash": "B9AEE74BECF22B7C7CFD91408A7B986CFB3C9876F36931506493E86BDA6A7908"
+        },
+        "Psnr": 52.526688812271665,
+        "ExactPixels": false,
+        "DimensionsMatch": true
+      },
+      {
+        "Key": "png-800-r0",
+        "Suite": "png",
+        "Name": "PNG to PNG 800px R0",
+        "Width": 800,
+        "Rotate": false,
+        "Workload": "Transform",
+        "OutputCodec": "Png",
+        "Tiesky": {
+          "Engine": "tiesky",
+          "MedianMilliseconds": 149.1706,
+          "DecodeMilliseconds": 85.169,
+          "TransformMilliseconds": 40.4664,
+          "EncodeMilliseconds": 21.6329,
+          "PeakPrivateBytes": 64327680,
+          "OutputBytes": 414520
+        },
+        "ImageSharp": {
+          "Engine": "imagesharp",
+          "MedianMilliseconds": 187.5882,
+          "DecodeMilliseconds": 121.9043,
+          "TransformMilliseconds": 44.5552,
+          "EncodeMilliseconds": 21.0493,
+          "PeakPrivateBytes": 62865408,
+          "OutputBytes": 413241
+        },
+        "OpenOutput": {
+          "Width": 800,
+          "Height": 600,
+          "PixelHash": "E677CA621253CBAE0FFEC4DF6DF58167B031B3EBE5220AC855BBAF416933C27A"
+        },
+        "ImageSharpOutput": {
+          "Width": 800,
+          "Height": 600,
+          "PixelHash": "697BEB8161532AAD50EFEC402969548BC18BDF7C7174B2E6EAC2D9474B512470"
+        },
+        "Psnr": 56.448673767599836,
+        "ExactPixels": false,
+        "DimensionsMatch": true
+      },
+      {
+        "Key": "png-800-r90",
+        "Suite": "png",
+        "Name": "PNG to PNG 800px R90",
+        "Width": 800,
+        "Rotate": true,
+        "Workload": "Transform",
+        "OutputCodec": "Png",
+        "Tiesky": {
+          "Engine": "tiesky",
+          "MedianMilliseconds": 177.2928,
+          "DecodeMilliseconds": 85.2235,
+          "TransformMilliseconds": 59.9979,
+          "EncodeMilliseconds": 30.1588,
+          "PeakPrivateBytes": 65204224,
+          "OutputBytes": 566342
+        },
+        "ImageSharp": {
+          "Engine": "imagesharp",
+          "MedianMilliseconds": 220.2058,
+          "DecodeMilliseconds": 117.3271,
+          "TransformMilliseconds": 73.4016,
+          "EncodeMilliseconds": 27.9122,
+          "PeakPrivateBytes": 100814848,
+          "OutputBytes": 566280
+        },
+        "OpenOutput": {
+          "Width": 600,
+          "Height": 800,
+          "PixelHash": "6994F7D36B4B558E3D0D1E08C3D61AB314523637B271EDC89BB022CE15A526BF"
+        },
+        "ImageSharpOutput": {
+          "Width": 600,
+          "Height": 800,
+          "PixelHash": "ACCEA71D57C61D52FF5FD5FF5921ADE89B336B7B9218A01E71FEA220426BE731"
+        },
+        "Psnr": 56.448673767599836,
+        "ExactPixels": false,
+        "DimensionsMatch": true
+      },
+      {
+        "Key": "png-1600-r0",
+        "Suite": "png",
+        "Name": "PNG to PNG 1600px R0",
+        "Width": 1600,
+        "Rotate": false,
+        "Workload": "Transform",
+        "OutputCodec": "Png",
+        "Tiesky": {
+          "Engine": "tiesky",
+          "MedianMilliseconds": 239.3503,
+          "DecodeMilliseconds": 85.1753,
+          "TransformMilliseconds": 60.6225,
+          "EncodeMilliseconds": 90.4584,
+          "PeakPrivateBytes": 82997248,
+          "OutputBytes": 1529962
+        },
+        "ImageSharp": {
+          "Engine": "imagesharp",
+          "MedianMilliseconds": 288.5078,
+          "DecodeMilliseconds": 136.9437,
+          "TransformMilliseconds": 65.6301,
+          "EncodeMilliseconds": 85.9942,
+          "PeakPrivateBytes": 77627392,
+          "OutputBytes": 1511627
+        },
+        "OpenOutput": {
+          "Width": 1600,
+          "Height": 1200,
+          "PixelHash": "F139F56C046AE2E19460F6712DE158CF4FC0B20EF24E9DDD9B5D867C75269D2F"
+        },
+        "ImageSharpOutput": {
+          "Width": 1600,
+          "Height": 1200,
+          "PixelHash": "6E1000CAC2A490E184BD626AE8B18B84EBF856928FA56FF4B05BBA7B72B4EE5E"
+        },
+        "Psnr": 55.07740935878221,
+        "ExactPixels": false,
+        "DimensionsMatch": true
+      },
+      {
+        "Key": "png-1600-r90",
+        "Suite": "png",
+        "Name": "PNG to PNG 1600px R90",
+        "Width": 1600,
+        "Rotate": true,
+        "Workload": "Transform",
+        "OutputCodec": "Png",
+        "Tiesky": {
+          "Engine": "tiesky",
+          "MedianMilliseconds": 288.9376,
+          "DecodeMilliseconds": 86.0628,
+          "TransformMilliseconds": 74.0053,
+          "EncodeMilliseconds": 126.7906,
+          "PeakPrivateBytes": 87269376,
+          "OutputBytes": 2161309
+        },
+        "ImageSharp": {
+          "Engine": "imagesharp",
+          "MedianMilliseconds": 337.4021,
+          "DecodeMilliseconds": 128.6701,
+          "TransformMilliseconds": 98.6982,
+          "EncodeMilliseconds": 109.0386,
+          "PeakPrivateBytes": 158515200,
+          "OutputBytes": 2151766
+        },
+        "OpenOutput": {
+          "Width": 1200,
+          "Height": 1600,
+          "PixelHash": "F1EC06808B560F0F5F3665DF27BA7AB3B0EF4AF3283208D3C266AD83B570C121"
+        },
+        "ImageSharpOutput": {
+          "Width": 1200,
+          "Height": 1600,
+          "PixelHash": "F6C09E708C5F38AFCD08139F3AA46578E8870C81A4C3CC2114A23231E228235E"
+        },
+        "Psnr": 55.07740935878221,
+        "ExactPixels": false,
+        "DimensionsMatch": true
+      },
+      {
+        "Key": "bmp-200-r0",
+        "Suite": "bmp",
+        "Name": "BMP to PNG 200px R0",
+        "Width": 200,
+        "Rotate": false,
+        "Workload": "Transform",
+        "OutputCodec": "Png",
+        "Tiesky": {
+          "Engine": "tiesky",
+          "MedianMilliseconds": 50.0938,
+          "DecodeMilliseconds": 12.1429,
+          "TransformMilliseconds": 34.3883,
+          "EncodeMilliseconds": 1.0646,
+          "PeakPrivateBytes": 167899136,
+          "OutputBytes": 4880
+        },
+        "ImageSharp": {
+          "Engine": "imagesharp",
+          "MedianMilliseconds": 40.1618,
+          "DecodeMilliseconds": 8.1487,
+          "TransformMilliseconds": 29.4565,
+          "EncodeMilliseconds": 1.5735,
+          "PeakPrivateBytes": 99667968,
+          "OutputBytes": 5020
+        },
+        "OpenOutput": {
+          "Width": 200,
+          "Height": 150,
+          "PixelHash": "C914A986C201A2407D5464DCDF94DC936DD47EBE0AC2CD553D0468F08CFE4C7B"
+        },
+        "ImageSharpOutput": {
+          "Width": 200,
+          "Height": 150,
+          "PixelHash": "00B8B73CAFEC9A2966C1AF0EB3CE94CC8415C93EC33B28BA913730B9F1505004"
+        },
+        "Psnr": 52.526688812271665,
+        "ExactPixels": false,
+        "DimensionsMatch": true
+      },
+      {
+        "Key": "bmp-200-r90",
+        "Suite": "bmp",
+        "Name": "BMP to PNG 200px R90",
+        "Width": 200,
+        "Rotate": true,
+        "Workload": "Transform",
+        "OutputCodec": "Png",
+        "Tiesky": {
+          "Engine": "tiesky",
+          "MedianMilliseconds": 70.3271,
+          "DecodeMilliseconds": 12.1866,
+          "TransformMilliseconds": 55.0556,
+          "EncodeMilliseconds": 0.7993,
+          "PeakPrivateBytes": 168779776,
+          "OutputBytes": 3701
+        },
+        "ImageSharp": {
+          "Engine": "imagesharp",
+          "MedianMilliseconds": 66.7667,
+          "DecodeMilliseconds": 8.1279,
+          "TransformMilliseconds": 56.1162,
+          "EncodeMilliseconds": 1.682,
+          "PeakPrivateBytes": 152440832,
+          "OutputBytes": 6071
+        },
+        "OpenOutput": {
+          "Width": 150,
+          "Height": 200,
+          "PixelHash": "4A593B10F5AF4EFD92E69DCE5CEE94A4ECB5BD9D5DFB654BC277D28256B2836C"
+        },
+        "ImageSharpOutput": {
+          "Width": 150,
+          "Height": 200,
+          "PixelHash": "B9AEE74BECF22B7C7CFD91408A7B986CFB3C9876F36931506493E86BDA6A7908"
+        },
+        "Psnr": 52.526688812271665,
+        "ExactPixels": false,
+        "DimensionsMatch": true
+      },
+      {
+        "Key": "bmp-800-r0",
+        "Suite": "bmp",
+        "Name": "BMP to PNG 800px R0",
+        "Width": 800,
+        "Rotate": false,
+        "Workload": "Transform",
+        "OutputCodec": "Png",
+        "Tiesky": {
+          "Engine": "tiesky",
+          "MedianMilliseconds": 80.6359,
+          "DecodeMilliseconds": 12.263,
+          "TransformMilliseconds": 43.977,
+          "EncodeMilliseconds": 21.4164,
+          "PeakPrivateBytes": 178151424,
+          "OutputBytes": 414520
+        },
+        "ImageSharp": {
+          "Engine": "imagesharp",
+          "MedianMilliseconds": 97.16,
+          "DecodeMilliseconds": 7.7956,
+          "TransformMilliseconds": 43.173,
+          "EncodeMilliseconds": 45.783,
+          "PeakPrivateBytes": 111284224,
+          "OutputBytes": 483623
+        },
+        "OpenOutput": {
+          "Width": 800,
+          "Height": 600,
+          "PixelHash": "E677CA621253CBAE0FFEC4DF6DF58167B031B3EBE5220AC855BBAF416933C27A"
+        },
+        "ImageSharpOutput": {
+          "Width": 800,
+          "Height": 600,
+          "PixelHash": "697BEB8161532AAD50EFEC402969548BC18BDF7C7174B2E6EAC2D9474B512470"
+        },
+        "Psnr": 56.448673767599836,
+        "ExactPixels": false,
+        "DimensionsMatch": true
+      },
+      {
+        "Key": "bmp-800-r90",
+        "Suite": "bmp",
+        "Name": "BMP to PNG 800px R90",
+        "Width": 800,
+        "Rotate": true,
+        "Workload": "Transform",
+        "OutputCodec": "Png",
+        "Tiesky": {
+          "Engine": "tiesky",
+          "MedianMilliseconds": 106.2068,
+          "DecodeMilliseconds": 12.3182,
+          "TransformMilliseconds": 60.0974,
+          "EncodeMilliseconds": 30.324,
+          "PeakPrivateBytes": 178851840,
+          "OutputBytes": 566342
+        },
+        "ImageSharp": {
+          "Engine": "imagesharp",
+          "MedianMilliseconds": 145.8832,
+          "DecodeMilliseconds": 8.0192,
+          "TransformMilliseconds": 79.254,
+          "EncodeMilliseconds": 58.5841,
+          "PeakPrivateBytes": 160772096,
+          "OutputBytes": 657411
+        },
+        "OpenOutput": {
+          "Width": 600,
+          "Height": 800,
+          "PixelHash": "6994F7D36B4B558E3D0D1E08C3D61AB314523637B271EDC89BB022CE15A526BF"
+        },
+        "ImageSharpOutput": {
+          "Width": 600,
+          "Height": 800,
+          "PixelHash": "ACCEA71D57C61D52FF5FD5FF5921ADE89B336B7B9218A01E71FEA220426BE731"
+        },
+        "Psnr": 56.448673767599836,
+        "ExactPixels": false,
+        "DimensionsMatch": true
+      },
+      {
+        "Key": "bmp-1600-r0",
+        "Suite": "bmp",
+        "Name": "BMP to PNG 1600px R0",
+        "Width": 1600,
+        "Rotate": false,
+        "Workload": "Transform",
+        "OutputCodec": "Png",
+        "Tiesky": {
+          "Engine": "tiesky",
+          "MedianMilliseconds": 161.2154,
+          "DecodeMilliseconds": 12.1412,
+          "TransformMilliseconds": 55.7864,
+          "EncodeMilliseconds": 89.6689,
+          "PeakPrivateBytes": 195772416,
+          "OutputBytes": 1529962
+        },
+        "ImageSharp": {
+          "Engine": "imagesharp",
+          "MedianMilliseconds": 228.9954,
+          "DecodeMilliseconds": 8.006,
+          "TransformMilliseconds": 59.1178,
+          "EncodeMilliseconds": 161.8087,
+          "PeakPrivateBytes": 127107072,
+          "OutputBytes": 1827162
+        },
+        "OpenOutput": {
+          "Width": 1600,
+          "Height": 1200,
+          "PixelHash": "F139F56C046AE2E19460F6712DE158CF4FC0B20EF24E9DDD9B5D867C75269D2F"
+        },
+        "ImageSharpOutput": {
+          "Width": 1600,
+          "Height": 1200,
+          "PixelHash": "6E1000CAC2A490E184BD626AE8B18B84EBF856928FA56FF4B05BBA7B72B4EE5E"
+        },
+        "Psnr": 55.07740935878221,
+        "ExactPixels": false,
+        "DimensionsMatch": true
+      },
+      {
+        "Key": "bmp-1600-r90",
+        "Suite": "bmp",
+        "Name": "BMP to PNG 1600px R90",
+        "Width": 1600,
+        "Rotate": true,
+        "Workload": "Transform",
+        "OutputCodec": "Png",
+        "Tiesky": {
+          "Engine": "tiesky",
+          "MedianMilliseconds": 218.1918,
+          "DecodeMilliseconds": 12.3145,
+          "TransformMilliseconds": 75.7447,
+          "EncodeMilliseconds": 126.666,
+          "PeakPrivateBytes": 199262208,
+          "OutputBytes": 2161309
+        },
+        "ImageSharp": {
+          "Engine": "imagesharp",
+          "MedianMilliseconds": 298.1079,
+          "DecodeMilliseconds": 7.8736,
+          "TransformMilliseconds": 88.6648,
+          "EncodeMilliseconds": 201.7033,
+          "PeakPrivateBytes": 225583104,
+          "OutputBytes": 2548724
+        },
+        "OpenOutput": {
+          "Width": 1200,
+          "Height": 1600,
+          "PixelHash": "F1EC06808B560F0F5F3665DF27BA7AB3B0EF4AF3283208D3C266AD83B570C121"
+        },
+        "ImageSharpOutput": {
+          "Width": 1200,
+          "Height": 1600,
+          "PixelHash": "F6C09E708C5F38AFCD08139F3AA46578E8870C81A4C3CC2114A23231E228235E"
+        },
+        "Psnr": 55.07740935878221,
+        "ExactPixels": false,
+        "DimensionsMatch": true
+      },
+      {
+        "Key": "vp8l-200-r0",
+        "Suite": "vp8l",
+        "Name": "VP8L to PNG 200px R0",
+        "Width": 200,
+        "Rotate": false,
+        "Workload": "Transform",
+        "OutputCodec": "Png",
+        "Tiesky": {
+          "Engine": "tiesky",
+          "MedianMilliseconds": 301.0132,
+          "DecodeMilliseconds": 256.9981,
+          "TransformMilliseconds": 40.8343,
+          "EncodeMilliseconds": 0.7536,
+          "PeakPrivateBytes": 110931968,
+          "OutputBytes": 4880
+        },
+        "ImageSharp": {
+          "Engine": "imagesharp",
+          "MedianMilliseconds": 183.1313,
+          "DecodeMilliseconds": 152.2026,
+          "TransformMilliseconds": 30.348,
+          "EncodeMilliseconds": 1.4834,
+          "PeakPrivateBytes": 165363712,
+          "OutputBytes": 5020
+        },
+        "OpenOutput": {
+          "Width": 200,
+          "Height": 150,
+          "PixelHash": "C914A986C201A2407D5464DCDF94DC936DD47EBE0AC2CD553D0468F08CFE4C7B"
+        },
+        "ImageSharpOutput": {
+          "Width": 200,
+          "Height": 150,
+          "PixelHash": "00B8B73CAFEC9A2966C1AF0EB3CE94CC8415C93EC33B28BA913730B9F1505004"
+        },
+        "Psnr": 52.526688812271665,
+        "ExactPixels": false,
+        "DimensionsMatch": true
+      },
+      {
+        "Key": "vp8l-200-r90",
+        "Suite": "vp8l",
+        "Name": "VP8L to PNG 200px R90",
+        "Width": 200,
+        "Rotate": true,
+        "Workload": "Transform",
+        "OutputCodec": "Png",
+        "Tiesky": {
+          "Engine": "tiesky",
+          "MedianMilliseconds": 315.2512,
+          "DecodeMilliseconds": 252.7894,
+          "TransformMilliseconds": 58.3416,
+          "EncodeMilliseconds": 0.8412,
+          "PeakPrivateBytes": 110985216,
+          "OutputBytes": 3701
+        },
+        "ImageSharp": {
+          "Engine": "imagesharp",
+          "MedianMilliseconds": 203.5966,
+          "DecodeMilliseconds": 144.2097,
+          "TransformMilliseconds": 59.8335,
+          "EncodeMilliseconds": 1.7831,
+          "PeakPrivateBytes": 216473600,
+          "OutputBytes": 6071
+        },
+        "OpenOutput": {
+          "Width": 150,
+          "Height": 200,
+          "PixelHash": "4A593B10F5AF4EFD92E69DCE5CEE94A4ECB5BD9D5DFB654BC277D28256B2836C"
+        },
+        "ImageSharpOutput": {
+          "Width": 150,
+          "Height": 200,
+          "PixelHash": "B9AEE74BECF22B7C7CFD91408A7B986CFB3C9876F36931506493E86BDA6A7908"
+        },
+        "Psnr": 52.526688812271665,
+        "ExactPixels": false,
+        "DimensionsMatch": true
+      },
+      {
+        "Key": "vp8l-800-r0",
+        "Suite": "vp8l",
+        "Name": "VP8L to PNG 800px R0",
+        "Width": 800,
+        "Rotate": false,
+        "Workload": "Transform",
+        "OutputCodec": "Png",
+        "Tiesky": {
+          "Engine": "tiesky",
+          "MedianMilliseconds": 318.4957,
+          "DecodeMilliseconds": 253.0756,
+          "TransformMilliseconds": 42.9336,
+          "EncodeMilliseconds": 21.2762,
+          "PeakPrivateBytes": 111702016,
+          "OutputBytes": 414520
+        },
+        "ImageSharp": {
+          "Engine": "imagesharp",
+          "MedianMilliseconds": 227.9694,
+          "DecodeMilliseconds": 139.7075,
+          "TransformMilliseconds": 43.0075,
+          "EncodeMilliseconds": 45.478,
+          "PeakPrivateBytes": 173318144,
+          "OutputBytes": 483623
+        },
+        "OpenOutput": {
+          "Width": 800,
+          "Height": 600,
+          "PixelHash": "E677CA621253CBAE0FFEC4DF6DF58167B031B3EBE5220AC855BBAF416933C27A"
+        },
+        "ImageSharpOutput": {
+          "Width": 800,
+          "Height": 600,
+          "PixelHash": "697BEB8161532AAD50EFEC402969548BC18BDF7C7174B2E6EAC2D9474B512470"
+        },
+        "Psnr": 56.448673767599836,
+        "ExactPixels": false,
+        "DimensionsMatch": true
+      },
+      {
+        "Key": "vp8l-800-r90",
+        "Suite": "vp8l",
+        "Name": "VP8L to PNG 800px R90",
+        "Width": 800,
+        "Rotate": true,
+        "Workload": "Transform",
+        "OutputCodec": "Png",
+        "Tiesky": {
+          "Engine": "tiesky",
+          "MedianMilliseconds": 345.8475,
+          "DecodeMilliseconds": 247.4023,
+          "TransformMilliseconds": 63.0181,
+          "EncodeMilliseconds": 31.8002,
+          "PeakPrivateBytes": 114696192,
+          "OutputBytes": 566342
+        },
+        "ImageSharp": {
+          "Engine": "imagesharp",
+          "MedianMilliseconds": 267.7739,
+          "DecodeMilliseconds": 138.7813,
+          "TransformMilliseconds": 70.9255,
+          "EncodeMilliseconds": 58.3186,
+          "PeakPrivateBytes": 223784960,
+          "OutputBytes": 657411
+        },
+        "OpenOutput": {
+          "Width": 600,
+          "Height": 800,
+          "PixelHash": "6994F7D36B4B558E3D0D1E08C3D61AB314523637B271EDC89BB022CE15A526BF"
+        },
+        "ImageSharpOutput": {
+          "Width": 600,
+          "Height": 800,
+          "PixelHash": "ACCEA71D57C61D52FF5FD5FF5921ADE89B336B7B9218A01E71FEA220426BE731"
+        },
+        "Psnr": 56.448673767599836,
+        "ExactPixels": false,
+        "DimensionsMatch": true
+      },
+      {
+        "Key": "vp8l-1600-r0",
+        "Suite": "vp8l",
+        "Name": "VP8L to PNG 1600px R0",
+        "Width": 1600,
+        "Rotate": false,
+        "Workload": "Transform",
+        "OutputCodec": "Png",
+        "Tiesky": {
+          "Engine": "tiesky",
+          "MedianMilliseconds": 408.7346,
+          "DecodeMilliseconds": 255.2226,
+          "TransformMilliseconds": 60.2461,
+          "EncodeMilliseconds": 88.356,
+          "PeakPrivateBytes": 117768192,
+          "OutputBytes": 1529962
+        },
+        "ImageSharp": {
+          "Engine": "imagesharp",
+          "MedianMilliseconds": 376.4272,
+          "DecodeMilliseconds": 145.4613,
+          "TransformMilliseconds": 60.5934,
+          "EncodeMilliseconds": 167.447,
+          "PeakPrivateBytes": 187625472,
+          "OutputBytes": 1827162
+        },
+        "OpenOutput": {
+          "Width": 1600,
+          "Height": 1200,
+          "PixelHash": "F139F56C046AE2E19460F6712DE158CF4FC0B20EF24E9DDD9B5D867C75269D2F"
+        },
+        "ImageSharpOutput": {
+          "Width": 1600,
+          "Height": 1200,
+          "PixelHash": "6E1000CAC2A490E184BD626AE8B18B84EBF856928FA56FF4B05BBA7B72B4EE5E"
+        },
+        "Psnr": 55.07740935878221,
+        "ExactPixels": false,
+        "DimensionsMatch": true
+      },
+      {
+        "Key": "vp8l-1600-r90",
+        "Suite": "vp8l",
+        "Name": "VP8L to PNG 1600px R90",
+        "Width": 1600,
+        "Rotate": true,
+        "Workload": "Transform",
+        "OutputCodec": "Png",
+        "Tiesky": {
+          "Engine": "tiesky",
+          "MedianMilliseconds": 496.7175,
+          "DecodeMilliseconds": 262.7181,
+          "TransformMilliseconds": 94.8754,
+          "EncodeMilliseconds": 134.9377,
+          "PeakPrivateBytes": 124772352,
+          "OutputBytes": 2161309
+        },
+        "ImageSharp": {
+          "Engine": "imagesharp",
+          "MedianMilliseconds": 467.3644,
+          "DecodeMilliseconds": 150.8592,
+          "TransformMilliseconds": 101.0519,
+          "EncodeMilliseconds": 213.9816,
+          "PeakPrivateBytes": 243257344,
+          "OutputBytes": 2548724
+        },
+        "OpenOutput": {
+          "Width": 1200,
+          "Height": 1600,
+          "PixelHash": "F1EC06808B560F0F5F3665DF27BA7AB3B0EF4AF3283208D3C266AD83B570C121"
+        },
+        "ImageSharpOutput": {
+          "Width": 1200,
+          "Height": 1600,
+          "PixelHash": "F6C09E708C5F38AFCD08139F3AA46578E8870C81A4C3CC2114A23231E228235E"
+        },
+        "Psnr": 55.07740935878221,
+        "ExactPixels": false,
+        "DimensionsMatch": true
+      },
+      {
+        "Key": "vp8-200-r0",
+        "Suite": "vp8",
+        "Name": "VP8 to JPEG 200px R0",
+        "Width": 200,
+        "Rotate": false,
+        "Workload": "Transform",
+        "OutputCodec": "Jpeg",
+        "Tiesky": {
+          "Engine": "tiesky",
+          "MedianMilliseconds": 738.6539,
+          "DecodeMilliseconds": 697.0605,
+          "TransformMilliseconds": 35.4844,
+          "EncodeMilliseconds": 0.8926,
+          "PeakPrivateBytes": 113700864,
+          "OutputBytes": 3280
+        },
+        "ImageSharp": {
+          "Engine": "imagesharp",
+          "MedianMilliseconds": 495.1774,
+          "DecodeMilliseconds": 465.9804,
+          "TransformMilliseconds": 28.6773,
+          "EncodeMilliseconds": 0.2566,
+          "PeakPrivateBytes": 127660032,
+          "OutputBytes": 3201
+        },
+        "OpenOutput": {
+          "Width": 200,
+          "Height": 150,
+          "PixelHash": "948573B48D02457AFDB4F52DDFB10CFF382AE547937C374EC6D42EDE9C6B08D2"
+        },
+        "ImageSharpOutput": {
+          "Width": 200,
+          "Height": 150,
+          "PixelHash": "B1B87B795795E32A0AAE1E9184612A48CD65DA0E3E38DB43C3171B0D1EC8F526"
+        },
+        "Psnr": 45.62741694729664,
+        "ExactPixels": false,
+        "DimensionsMatch": true
+      },
+      {
+        "Key": "vp8-200-r90",
+        "Suite": "vp8",
+        "Name": "VP8 to JPEG 200px R90",
+        "Width": 200,
+        "Rotate": true,
+        "Workload": "Transform",
+        "OutputCodec": "Jpeg",
+        "Tiesky": {
+          "Engine": "tiesky",
+          "MedianMilliseconds": 761.9786,
+          "DecodeMilliseconds": 698.8907,
+          "TransformMilliseconds": 58.9209,
+          "EncodeMilliseconds": 0.9107,
+          "PeakPrivateBytes": 114302976,
+          "OutputBytes": 4151
+        },
+        "ImageSharp": {
+          "Engine": "imagesharp",
+          "MedianMilliseconds": 524.0765,
+          "DecodeMilliseconds": 465.6092,
+          "TransformMilliseconds": 57.5091,
+          "EncodeMilliseconds": 0.2734,
+          "PeakPrivateBytes": 179646464,
+          "OutputBytes": 4163
+        },
+        "OpenOutput": {
+          "Width": 150,
+          "Height": 200,
+          "PixelHash": "6C46A72B6F6E9F1F3D75D6DC0E03C65D2F08FD967A0B4E1416154296816C3177"
+        },
+        "ImageSharpOutput": {
+          "Width": 150,
+          "Height": 200,
+          "PixelHash": "8DAAE7CB6B37DE7012A058A6E9D3D122A1C88BA59994C0C75E720691CDB33AD0"
+        },
+        "Psnr": 45.24696976468135,
+        "ExactPixels": false,
+        "DimensionsMatch": true
+      },
+      {
+        "Key": "vp8-800-r0",
+        "Suite": "vp8",
+        "Name": "VP8 to JPEG 800px R0",
+        "Width": 800,
+        "Rotate": false,
+        "Workload": "Transform",
+        "OutputCodec": "Jpeg",
+        "Tiesky": {
+          "Engine": "tiesky",
+          "MedianMilliseconds": 767.9224,
+          "DecodeMilliseconds": 701.887,
+          "TransformMilliseconds": 44.7281,
+          "EncodeMilliseconds": 15.7728,
+          "PeakPrivateBytes": 160763904,
+          "OutputBytes": 296175
+        },
+        "ImageSharp": {
+          "Engine": "imagesharp",
+          "MedianMilliseconds": 512.5106,
+          "DecodeMilliseconds": 465.1495,
+          "TransformMilliseconds": 41.3001,
+          "EncodeMilliseconds": 6.0479,
+          "PeakPrivateBytes": 133181440,
+          "OutputBytes": 295179
+        },
+        "OpenOutput": {
+          "Width": 800,
+          "Height": 600,
+          "PixelHash": "FA5D7FBFED498ED83E468453C32177930E14C57CC5488B6C1D609D918159F60E"
+        },
+        "ImageSharpOutput": {
+          "Width": 800,
+          "Height": 600,
+          "PixelHash": "94E52730F0D0D5521A3954364D74B46C35373B11F8EC153B692926286D6BE910"
+        },
+        "Psnr": 34.24490529677657,
+        "ExactPixels": false,
+        "DimensionsMatch": true
+      },
+      {
+        "Key": "vp8-800-r90",
+        "Suite": "vp8",
+        "Name": "VP8 to JPEG 800px R90",
+        "Width": 800,
+        "Rotate": true,
+        "Workload": "Transform",
+        "OutputCodec": "Jpeg",
+        "Tiesky": {
+          "Engine": "tiesky",
+          "MedianMilliseconds": 777.9778,
+          "DecodeMilliseconds": 698.3567,
+          "TransformMilliseconds": 61.2572,
+          "EncodeMilliseconds": 15.8159,
+          "PeakPrivateBytes": 133509120,
+          "OutputBytes": 297010
+        },
+        "ImageSharp": {
+          "Engine": "imagesharp",
+          "MedianMilliseconds": 541.3251,
+          "DecodeMilliseconds": 464.2963,
+          "TransformMilliseconds": 70.0793,
+          "EncodeMilliseconds": 6.0606,
+          "PeakPrivateBytes": 180568064,
+          "OutputBytes": 296063
+        },
+        "OpenOutput": {
+          "Width": 600,
+          "Height": 800,
+          "PixelHash": "E68F4B4168019A5211A7FB43260A53590773755CFF42CD771992D89B91834681"
+        },
+        "ImageSharpOutput": {
+          "Width": 600,
+          "Height": 800,
+          "PixelHash": "2BE624A4DAE62BCFBE5C3D741A302FE111E7C83082BD3A88CDCB347DF26763DF"
+        },
+        "Psnr": 34.672524762219226,
+        "ExactPixels": false,
+        "DimensionsMatch": true
+      },
+      {
+        "Key": "vp8-1600-r0",
+        "Suite": "vp8",
+        "Name": "VP8 to JPEG 1600px R0",
+        "Width": 1600,
+        "Rotate": false,
+        "Workload": "Transform",
+        "OutputCodec": "Jpeg",
+        "Tiesky": {
+          "Engine": "tiesky",
+          "MedianMilliseconds": 773.9498,
+          "DecodeMilliseconds": 694.4706,
+          "TransformMilliseconds": 55.7686,
+          "EncodeMilliseconds": 20.502,
+          "PeakPrivateBytes": 149467136,
+          "OutputBytes": 1211951
+        },
+        "ImageSharp": {
+          "Engine": "imagesharp",
+          "MedianMilliseconds": 545.3455,
+          "DecodeMilliseconds": 462.9112,
+          "TransformMilliseconds": 58.8078,
+          "EncodeMilliseconds": 23.1529,
+          "PeakPrivateBytes": 142319616,
+          "OutputBytes": 1202259
+        },
+        "OpenOutput": {
+          "Width": 1600,
+          "Height": 1200,
+          "PixelHash": "23349E80DB2A8E30CA21700EEC8DEE7B5113B3DE96B0577E2321DF1C4862064E"
+        },
+        "ImageSharpOutput": {
+          "Width": 1600,
+          "Height": 1200,
+          "PixelHash": "37D3D56B12B9D9F5A3415AF1EAFE2EFB61596B36A1DEE517E3609C755AC26BB3"
+        },
+        "Psnr": 30.47360341703095,
+        "ExactPixels": false,
+        "DimensionsMatch": true
+      },
+      {
+        "Key": "vp8-1600-r90",
+        "Suite": "vp8",
+        "Name": "VP8 to JPEG 1600px R90",
+        "Width": 1600,
+        "Rotate": true,
+        "Workload": "Transform",
+        "OutputCodec": "Jpeg",
+        "Tiesky": {
+          "Engine": "tiesky",
+          "MedianMilliseconds": 781.6265,
+          "DecodeMilliseconds": 692.9636,
+          "TransformMilliseconds": 65.4065,
+          "EncodeMilliseconds": 20.5807,
+          "PeakPrivateBytes": 149549056,
+          "OutputBytes": 1212856
+        },
+        "ImageSharp": {
+          "Engine": "imagesharp",
+          "MedianMilliseconds": 581.6158,
+          "DecodeMilliseconds": 467.9191,
+          "TransformMilliseconds": 88.4172,
+          "EncodeMilliseconds": 24.3433,
+          "PeakPrivateBytes": 185491456,
+          "OutputBytes": 1203431
+        },
+        "OpenOutput": {
+          "Width": 1200,
+          "Height": 1600,
+          "PixelHash": "65384140B5194924444BD0B59B80408E67E770A483E106AD18B673628F33CB15"
+        },
+        "ImageSharpOutput": {
+          "Width": 1200,
+          "Height": 1600,
+          "PixelHash": "29116A94FF4435BF03FEE5D3C45C723CF1DE24E5EAB663CAA3E17E69E450CC75"
+        },
+        "Psnr": 30.47749068519415,
+        "ExactPixels": false,
+        "DimensionsMatch": true
+      },
+      {
+        "Key": "encode-png-l6",
+        "Suite": "encoders",
+        "Name": "PNG encoder 1600x1200 L6",
+        "Width": 1600,
+        "Rotate": false,
+        "Workload": "Encode",
+        "OutputCodec": "Png",
+        "Tiesky": {
+          "Engine": "tiesky",
+          "MedianMilliseconds": 88.9592,
+          "DecodeMilliseconds": 0,
+          "TransformMilliseconds": 0,
+          "EncodeMilliseconds": 88.805,
+          "PeakPrivateBytes": 35065856,
+          "OutputBytes": 1493343
+        },
+        "ImageSharp": {
+          "Engine": "imagesharp",
+          "MedianMilliseconds": 170.9674,
+          "DecodeMilliseconds": 0,
+          "TransformMilliseconds": 0,
+          "EncodeMilliseconds": 170.5166,
+          "PeakPrivateBytes": 46116864,
+          "OutputBytes": 1777385
+        },
+        "OpenOutput": {
+          "Width": 1600,
+          "Height": 1200,
+          "PixelHash": "8DB2EA92F8B106582F0933BCF50CB2AF2949B59E5F020C401326F28F3AA88E9B"
+        },
+        "ImageSharpOutput": {
+          "Width": 1600,
+          "Height": 1200,
+          "PixelHash": "8DB2EA92F8B106582F0933BCF50CB2AF2949B59E5F020C401326F28F3AA88E9B"
+        },
+        "Psnr": 999,
+        "ExactPixels": true,
+        "DimensionsMatch": true
+      },
+      {
+        "Key": "encode-jpeg-q85",
+        "Suite": "encoders",
+        "Name": "JPEG encoder 1600x1200 Q85",
+        "Width": 1600,
+        "Rotate": false,
+        "Workload": "Encode",
+        "OutputCodec": "Jpeg",
+        "Tiesky": {
+          "Engine": "tiesky",
+          "MedianMilliseconds": 76.246,
+          "DecodeMilliseconds": 0,
+          "TransformMilliseconds": 0,
+          "EncodeMilliseconds": 76.0705,
+          "PeakPrivateBytes": 34529280,
+          "OutputBytes": 1183541
+        },
+        "ImageSharp": {
+          "Engine": "imagesharp",
+          "MedianMilliseconds": 24.4499,
+          "DecodeMilliseconds": 0,
+          "TransformMilliseconds": 0,
+          "EncodeMilliseconds": 24.242,
+          "PeakPrivateBytes": 35565568,
+          "OutputBytes": 1181926
+        },
+        "OpenOutput": {
+          "Width": 1600,
+          "Height": 1200,
+          "PixelHash": "9255F92263B37026FA74440C509E8F800184E91E204B111D9A70F3D2A8CE9611"
+        },
+        "ImageSharpOutput": {
+          "Width": 1600,
+          "Height": 1200,
+          "PixelHash": "FFA692A2B4916D749481DF1DAA2396E1403CB7B126BE83E3A614D7B1CE519354"
+        },
+        "Psnr": 37.335349113438774,
+        "ExactPixels": false,
+        "DimensionsMatch": true
+      },
+      {
+        "Key": "vp8l-decode-12mp",
+        "Suite": "vp8l",
+        "Name": "VP8L decode 4000x3000",
+        "Width": 4000,
+        "Rotate": false,
+        "Workload": "Decode",
+        "OutputCodec": "Png",
+        "Tiesky": {
+          "Engine": "tiesky",
+          "MedianMilliseconds": 250.8744,
+          "DecodeMilliseconds": 250.8744,
+          "TransformMilliseconds": 0,
+          "EncodeMilliseconds": 0,
+          "PeakPrivateBytes": 115924992,
+          "OutputBytes": 1985083
+        },
+        "ImageSharp": {
+          "Engine": "imagesharp",
+          "MedianMilliseconds": 139.3681,
+          "DecodeMilliseconds": 139.3681,
+          "TransformMilliseconds": 0,
+          "EncodeMilliseconds": 0,
+          "PeakPrivateBytes": 186191872,
+          "OutputBytes": 2151617
+        },
+        "OpenOutput": {
+          "Width": 4000,
+          "Height": 3000,
+          "PixelHash": "74C76EB6C983CF41CC55EB6A3421281BFAE7E13C315C13B450F6721E5FA2896D"
+        },
+        "ImageSharpOutput": {
+          "Width": 4000,
+          "Height": 3000,
+          "PixelHash": "74C76EB6C983CF41CC55EB6A3421281BFAE7E13C315C13B450F6721E5FA2896D"
+        },
+        "Psnr": 999,
+        "ExactPixels": true,
+        "DimensionsMatch": true
+      },
+      {
+        "Key": "vp8l-rotate-12mp-r90",
+        "Suite": "vp8l",
+        "Name": "VP8L rotate 4000x3000 R90",
+        "Width": 4000,
+        "Rotate": true,
+        "Workload": "Rotate",
+        "OutputCodec": "Png",
+        "Tiesky": {
+          "Engine": "tiesky",
+          "MedianMilliseconds": 14.8049,
+          "DecodeMilliseconds": 0,
+          "TransformMilliseconds": 14.8049,
+          "EncodeMilliseconds": 0,
+          "PeakPrivateBytes": 122499072,
+          "OutputBytes": 2673513
+        },
+        "ImageSharp": {
+          "Engine": "imagesharp",
+          "MedianMilliseconds": 28.0158,
+          "DecodeMilliseconds": 0,
+          "TransformMilliseconds": 28.0158,
+          "EncodeMilliseconds": 0,
+          "PeakPrivateBytes": 138960896,
+          "OutputBytes": 2930508
+        },
+        "OpenOutput": {
+          "Width": 3000,
+          "Height": 4000,
+          "PixelHash": "A5A5E295CAA4484CCA49431DFB52CDDA5017F2DF2F47171474B95562C8EDB794"
+        },
+        "ImageSharpOutput": {
+          "Width": 3000,
+          "Height": 4000,
+          "PixelHash": "A5A5E295CAA4484CCA49431DFB52CDDA5017F2DF2F47171474B95562C8EDB794"
+        },
+        "Psnr": 999,
+        "ExactPixels": true,
+        "DimensionsMatch": true
+      },
+      {
+        "Key": "vp8l-resize-12mp-1600",
+        "Suite": "vp8l",
+        "Name": "VP8L resize 4000x3000 to 1600px",
+        "Width": 1600,
+        "Rotate": false,
+        "Workload": "Resize",
+        "OutputCodec": "Png",
+        "Tiesky": {
+          "Engine": "tiesky",
+          "MedianMilliseconds": 61.8033,
+          "DecodeMilliseconds": 0,
+          "TransformMilliseconds": 61.8033,
+          "EncodeMilliseconds": 0,
+          "PeakPrivateBytes": 95293440,
+          "OutputBytes": 1529962
+        },
+        "ImageSharp": {
+          "Engine": "imagesharp",
+          "MedianMilliseconds": 58.9748,
+          "DecodeMilliseconds": 0,
+          "TransformMilliseconds": 58.9748,
+          "EncodeMilliseconds": 0,
+          "PeakPrivateBytes": 88387584,
+          "OutputBytes": 1827162
+        },
+        "OpenOutput": {
+          "Width": 1600,
+          "Height": 1200,
+          "PixelHash": "F139F56C046AE2E19460F6712DE158CF4FC0B20EF24E9DDD9B5D867C75269D2F"
+        },
+        "ImageSharpOutput": {
+          "Width": 1600,
+          "Height": 1200,
+          "PixelHash": "6E1000CAC2A490E184BD626AE8B18B84EBF856928FA56FF4B05BBA7B72B4EE5E"
+        },
+        "Psnr": 55.07740935878221,
+        "ExactPixels": false,
+        "DimensionsMatch": true
+      },
+      {
+        "Key": "vp8l-output-encode-12mp-png-l6",
+        "Suite": "vp8l",
+        "Name": "VP8L decoded output to PNG 4000x3000 L6",
+        "Width": 4000,
+        "Rotate": false,
+        "Workload": "EncodeDecoded",
+        "OutputCodec": "Png",
+        "Tiesky": {
+          "Engine": "tiesky",
+          "MedianMilliseconds": 231.5748,
+          "DecodeMilliseconds": 0,
+          "TransformMilliseconds": 0,
+          "EncodeMilliseconds": 231.2707,
+          "PeakPrivateBytes": 67416064,
+          "OutputBytes": 1985083
+        },
+        "ImageSharp": {
+          "Engine": "imagesharp",
+          "MedianMilliseconds": 500.6622,
+          "DecodeMilliseconds": 0,
+          "TransformMilliseconds": 0,
+          "EncodeMilliseconds": 500.4715,
+          "PeakPrivateBytes": 94658560,
+          "OutputBytes": 2151617
+        },
+        "OpenOutput": {
+          "Width": 4000,
+          "Height": 3000,
+          "PixelHash": "74C76EB6C983CF41CC55EB6A3421281BFAE7E13C315C13B450F6721E5FA2896D"
+        },
+        "ImageSharpOutput": {
+          "Width": 4000,
+          "Height": 3000,
+          "PixelHash": "74C76EB6C983CF41CC55EB6A3421281BFAE7E13C315C13B450F6721E5FA2896D"
+        },
+        "Psnr": 999,
+        "ExactPixels": true,
+        "DimensionsMatch": true
+      },
+      {
+        "Key": "vp8-decode-12mp",
+        "Suite": "vp8",
+        "Name": "VP8 decode 4000x3000",
+        "Width": 4000,
+        "Rotate": false,
+        "Workload": "Decode",
+        "OutputCodec": "Png",
+        "Tiesky": {
+          "Engine": "tiesky",
+          "MedianMilliseconds": 697.8481,
+          "DecodeMilliseconds": 697.8481,
+          "TransformMilliseconds": 0,
+          "EncodeMilliseconds": 0,
+          "PeakPrivateBytes": 118157312,
+          "OutputBytes": 5437230
+        },
+        "ImageSharp": {
+          "Engine": "imagesharp",
+          "MedianMilliseconds": 474.1582,
+          "DecodeMilliseconds": 474.1582,
+          "TransformMilliseconds": 0,
+          "EncodeMilliseconds": 0,
+          "PeakPrivateBytes": 178778112,
+          "OutputBytes": 6482822
+        },
+        "OpenOutput": {
+          "Width": 4000,
+          "Height": 3000,
+          "PixelHash": "C892A2ABCC33F6A5075E390040CD40023CE686FF68003C3B87ED249DF99CC99D"
+        },
+        "ImageSharpOutput": {
+          "Width": 4000,
+          "Height": 3000,
+          "PixelHash": "2A374596DC240B2E0E9B021E312B7AB34DF73C664735C1659EC6FE766D99BFD5"
+        },
+        "Psnr": 25.521605973933003,
+        "ExactPixels": false,
+        "DimensionsMatch": true
+      },
+      {
+        "Key": "vp8-rotate-12mp-r90",
+        "Suite": "vp8",
+        "Name": "VP8 rotate 4000x3000 R90",
+        "Width": 4000,
+        "Rotate": true,
+        "Workload": "Rotate",
+        "OutputCodec": "Png",
+        "Tiesky": {
+          "Engine": "tiesky",
+          "MedianMilliseconds": 14.4809,
+          "DecodeMilliseconds": 0,
+          "TransformMilliseconds": 14.4809,
+          "EncodeMilliseconds": 0,
+          "PeakPrivateBytes": 208912384,
+          "OutputBytes": 8249612
+        },
+        "ImageSharp": {
+          "Engine": "imagesharp",
+          "MedianMilliseconds": 30.3651,
+          "DecodeMilliseconds": 0,
+          "TransformMilliseconds": 30.3651,
+          "EncodeMilliseconds": 0,
+          "PeakPrivateBytes": 279560192,
+          "OutputBytes": 9805484
+        },
+        "OpenOutput": {
+          "Width": 3000,
+          "Height": 4000,
+          "PixelHash": "3EBAAF51D48C0784C8EA565861E76068259214A8AC3CFC39A213007535341D8E"
+        },
+        "ImageSharpOutput": {
+          "Width": 3000,
+          "Height": 4000,
+          "PixelHash": "E3D65375D18B5B6808936281F527FFFAFEDAB20E9720D459A3352A4FE90C035A"
+        },
+        "Psnr": 25.521605973933003,
+        "ExactPixels": false,
+        "DimensionsMatch": true
+      },
+      {
+        "Key": "vp8-resize-12mp-1600",
+        "Suite": "vp8",
+        "Name": "VP8 resize 4000x3000 to 1600px",
+        "Width": 1600,
+        "Rotate": false,
+        "Workload": "Resize",
+        "OutputCodec": "Png",
+        "Tiesky": {
+          "Engine": "tiesky",
+          "MedianMilliseconds": 58.2776,
+          "DecodeMilliseconds": 0,
+          "TransformMilliseconds": 58.2776,
+          "EncodeMilliseconds": 0,
+          "PeakPrivateBytes": 158765056,
+          "OutputBytes": 2914167
+        },
+        "ImageSharp": {
+          "Engine": "imagesharp",
+          "MedianMilliseconds": 59.1262,
+          "DecodeMilliseconds": 0,
+          "TransformMilliseconds": 59.1262,
+          "EncodeMilliseconds": 0,
+          "PeakPrivateBytes": 144916480,
+          "OutputBytes": 3334817
+        },
+        "OpenOutput": {
+          "Width": 1600,
+          "Height": 1200,
+          "PixelHash": "A2C69F8CB573A88B908F8C345838B29052C0AB6DDA2B1DCF73B97980FEB9A348"
+        },
+        "ImageSharpOutput": {
+          "Width": 1600,
+          "Height": 1200,
+          "PixelHash": "27B8886CB9B3B94E4F5841E3B8DD5D21A505F5985435C822C9CEBF538D80C746"
+        },
+        "Psnr": 36.28411284018053,
+        "ExactPixels": false,
+        "DimensionsMatch": true
+      },
+      {
+        "Key": "vp8-output-encode-12mp-jpeg-q85",
+        "Suite": "vp8",
+        "Name": "VP8 decoded output to JPEG 4000x3000 Q85",
+        "Width": 4000,
+        "Rotate": false,
+        "Workload": "EncodeDecoded",
+        "OutputCodec": "Jpeg",
+        "Tiesky": {
+          "Engine": "tiesky",
+          "MedianMilliseconds": 121.3709,
+          "DecodeMilliseconds": 0,
+          "TransformMilliseconds": 0,
+          "EncodeMilliseconds": 120.1581,
+          "PeakPrivateBytes": 175083520,
+          "OutputBytes": 6324025
+        },
+        "ImageSharp": {
+          "Engine": "imagesharp",
+          "MedianMilliseconds": 133.4519,
+          "DecodeMilliseconds": 0,
+          "TransformMilliseconds": 0,
+          "EncodeMilliseconds": 132.3557,
+          "PeakPrivateBytes": 109191168,
+          "OutputBytes": 5840699
+        },
+        "OpenOutput": {
+          "Width": 4000,
+          "Height": 3000,
+          "PixelHash": "4D3C3E3C9DAB948E3444F5542A76F71DF76CFA6144BA609717B870F42F4747B5"
+        },
+        "ImageSharpOutput": {
+          "Width": 4000,
+          "Height": 3000,
+          "PixelHash": "CF4D35A031A77497ABC1D44800B55A9EECB3721E4E78C3505108DB1E0553626B"
+        },
+        "Psnr": 23.20222459201435,
+        "ExactPixels": false,
+        "DimensionsMatch": true
+      }
+    ]
+  },
+  "SelfBaselineSuites": [
+    "jpeg"
+  ]
+}</script></main></body></html>
