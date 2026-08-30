@@ -1,6 +1,10 @@
 using System.Buffers;
 using Tiesky.Image2D;
 
+CreateRequestedThumbnail();
+return 0;
+
+
 if (args.Length is < 1 or > 2)
 {
     Console.Error.WriteLine("Usage: Tiesky.Image2D.Examples <input-image> [output-directory]");
@@ -101,6 +105,31 @@ File.WriteAllBytes(Path.Combine(outputDirectory, "transform-options.png"), legac
 
 Console.WriteLine($"Wrote examples to {outputDirectory}");
 return 0;
+
+static void CreateRequestedThumbnail()
+{
+    const string inputPath = @"D:\VS\temp\Sixlabortest\tests\Narayana.png";
+    const string outputPath = @"D:\VS\temp\Sixlabortest\tests\narayana_thumb.png";
+
+    byte[] sourceBytes = File.ReadAllBytes(inputPath);
+    byte[] thumbnail = ImageTransformer.Transform(
+        sourceBytes,
+        [
+            new RotateTransformation(ImageRotation.Clockwise90),
+            new ResizeTransformation(new ResizeOptions
+            {
+                Width = 800,
+                Height = 800,
+               // Mode = ResizeMode.Stretch,
+                Mode = ResizeMode.Contain,
+                Filter = ResizeFilter.Lanczos3,
+            }),
+        ],
+        new PngEncoderOptions());
+
+    File.WriteAllBytes(outputPath, thumbnail);
+    Console.WriteLine($"Wrote requested thumbnail to {outputPath}");
+}
 
 file sealed class NonSeekableReadStream : Stream
 {
