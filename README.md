@@ -8,9 +8,8 @@
 [![Powered by tiesky.com](https://img.shields.io/badge/Powered%20by-tiesky.com-1883F5.svg)](https://tiesky.com)
 
 `Tiesky.Image2D` is a focused .NET 8> sequential image transformation library for the server-side.
-Input: JPEG, PNG, BMP, and WebP.
-Operations: EXIF orientation, quarter-turn rotation, resizing. 
-Output: PNG/JPEG output.
+
+JPEG, PNG, BMP, and WebP -> EXIF orientation, rotations, resizing -> PNG/JPEG.
 
 It is written in pure, modern, highly optimized, multi-platform C#. 
 
