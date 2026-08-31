@@ -5,7 +5,7 @@
 [![NuGet downloads](https://img.shields.io/nuget/dt/Tiesky.Image2D?color=blue&label=Nuget%20downloads)](https://www.nuget.org/packages/Tiesky.Image2D/)
 [![Powered by tiesky.com](https://img.shields.io/badge/Powered%20by-tiesky.com-1883F5.svg)](https://tiesky.com)
 
-![Tiesky.Image2D project logo](https://raw.githubusercontent.com/hhblaze/Tiesky.Image2D/main/Deployment/logo1.png)
+![Tiesky.Image2D project logo](https://raw.githubusercontent.com/hhblaze/Tiesky.Image2D/main/Deployment/logo1s.png)
 
 `Tiesky.Image2D` is a focused .NET8> image transform library for server-side load, EXIF orientation, 90-degree rotation, resize, and PNG/JPEG output.
 It is written in pure, modern, highly optimized, multi-platform C#. 
