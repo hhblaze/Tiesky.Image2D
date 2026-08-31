@@ -7,7 +7,7 @@
 [![NuGet downloads](https://img.shields.io/nuget/dt/Tiesky.Image2D?color=blue&label=Nuget%20downloads)](https://www.nuget.org/packages/Tiesky.Image2D/)
 [![Powered by tiesky.com](https://img.shields.io/badge/Powered%20by-tiesky.com-1883F5.svg)](https://tiesky.com)
 
-`Tiesky.Image2D` is a focused .NET 8> multi-platform sequential image transformation library.
+`Tiesky.Image2D` is a focused .NET 8> multi-platform sequential image 2D transformation library.
 
 JPEG, PNG, BMP, and WebP -> EXIF orientation, rotations, resizing -> PNG/JPEG.
 
