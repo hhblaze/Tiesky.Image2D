@@ -8,9 +8,7 @@
 [![Powered by tiesky.com](https://img.shields.io/badge/Powered%20by-tiesky.com-1883F5.svg)](https://tiesky.com)
 
 `Tiesky.Image2D` is a focused .NET 8> sequential image transformation library for the server-side.
-
 JPEG, PNG, BMP, and WebP -> EXIF orientation, rotations, resizing -> PNG/JPEG.
-
 It is written in pure, modern, highly optimized, multi-platform C#. 
 
 ```csharp
@@ -51,8 +49,9 @@ The [examples](examples/README.md) cover every ownership model. The
 [LLM usage guide](_Docs/LLM/tiesky_image2D_skill.md) documents transformation parameters,
 resize semantics, ownership contracts, limits, and complete code examples for assistants working
 with this library. Implementation notes and extension invariants live in `_Docs/Implementation`
-and must be updated with architectural or algorithmic changes.
+and will be updated with architectural or algorithmic changes.
 
+When you need more image transformations - write an issue.
 
 Build and test from the solution root:
 
@@ -64,5 +63,7 @@ dotnet run --project benchmarks\Tiesky.Image2D.Benchmarks -c Release -- --suite 
 ```
 
 The benchmark accepts `--suite jpeg,png,bmp,vp8l,vp8,encoders`, `--iterations`, `--warmups`, `--html`, and optional `--gate parity|png-parity|jpeg-parity|webp-parity|outperform` controls. JPEG, VP8L, and VP8 each contain 12 MP decode, predecoded rotation, predecoded resize, output-encode, and six thumbnail rows; PNG contains decode, rotation, encode, and six thumbnail rows. The tracked, self-contained [benchmark report vs Sixlabors.ImageSharp](_Docs/Implementation/BenchmarkResults.html) contains the complete 47-scenario matrix and embedded raw data. WebP remains decode-only: its output-encode rows are explicitly VP8L→PNG level 6 and VP8→JPEG quality 85.
+
+hhblaze@gmail.com
 
 
